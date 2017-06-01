@@ -1,6 +1,9 @@
 let express = require('express');
 let morgan = require('morgan');
 let mongoose = require('mongoose');
+let bodyParser = require('body-parser');
+
+let User = require('./models/user');
 
 let secret = require('./config/secret');
 
@@ -15,9 +18,25 @@ mongoose.connect(secret.database, (err) => {
 });
 
 app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   res.json("Welcome to RSSFeedMe!");
+});
+
+app.post('/create-user', (req, res, next) => {
+  let user = new User();
+
+  user.name = req.body.name;
+  user.email = req.body.email;
+  user.username = req.body.username;
+  user.password_digest = req.body.password;
+
+  user.save((err) => {
+    if (err) return next(err);
+    res.json("Successfully created a new user");
+  });
 });
 
 app.listen(secret.port, (err) => {
