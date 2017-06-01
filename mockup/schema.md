@@ -8,6 +8,7 @@ name            | string    | not null
 email           | string    | not null
 username        | string    | not null
 password_digest | string    | not null
+avatar_url      | string    |
 
 ## collections
 column name     | data type | details
