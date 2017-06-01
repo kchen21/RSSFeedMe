@@ -28,3 +28,5 @@ UserSchema.pre('save', (next) => {
 UserSchema.methods.comparePassword = (password) => {
   return bycrypt.compareSync(password, this.password);
 };
+
+module.exports = mongoose.model('User', UserSchema);
