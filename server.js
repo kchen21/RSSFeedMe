@@ -26,7 +26,7 @@ app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-  res.render('today');
+  res.render('main/today');
 });
 
 app.post('/create-user', (req, res, next) => {
