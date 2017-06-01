@@ -2,6 +2,8 @@ let express = require('express');
 let morgan = require('morgan');
 let mongoose = require('mongoose');
 let bodyParser = require('body-parser');
+let ejs = require('ejs');
+let engine = require('ejs-mate');
 
 let User = require('./models/user');
 
@@ -20,9 +22,11 @@ mongoose.connect(secret.database, (err) => {
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.engine('ejs', engine);
+app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-  res.json("Welcome to RSSFeedMe!");
+  res.render('today');
 });
 
 app.post('/create-user', (req, res, next) => {
