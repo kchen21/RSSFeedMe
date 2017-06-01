@@ -7,7 +7,7 @@ let UserSchema =  new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true, lowercase: true },
   username: { type: String, required: true, unique: true },
-  password_digest: String,
+  password_digest: { type: String, required: true },
   avatar_url: {type: String, default: '' }
 });
 
