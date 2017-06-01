@@ -1,0 +1,23 @@
+{
+  "name": "RSSFeedMe",
+  "version": "1.0.0",
+  "description": "RSSFeedMe is a full-stack app that gathers the latest news and information from RSS feeds that its users subscribe to.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kchen21/RSSFeedMe.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kchen21/RSSFeedMe/issues"
+  },
+  "homepage": "https://github.com/kchen21/RSSFeedMe#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
