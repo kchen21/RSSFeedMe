@@ -1,9 +1,18 @@
 let express = require('express');
 let morgan = require('morgan');
+let mongoose = require('mongoose');
 
 let secret = require('./config/secret');
 
 let app = express();
+
+mongoose.connect(secret.database, (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Connected to the database");
+  }
+});
 
 app.use(morgan('dev'));
 
