@@ -11,7 +11,7 @@ let UserSchema =  new Schema({
   avatar_url: {type: String, default: '' }
 });
 
-UserSchema.pre('save', (next) => {
+UserSchema.pre('save', function(next) {
   let user = this;
 
   if (!user.isModified('password_digest')) return next();
