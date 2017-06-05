@@ -1,8 +1,8 @@
 let router = require('express').Router();
 let User = require('../models/user');
 
-router.get('/signup', (req, res, next) => {
-  res.render('accounts/signup');
+router.get('/welcome', (req, res, next) => {
+  res.render('accounts/welcome');
 });
 
 router.post('/signup', (req, res, next) => {
