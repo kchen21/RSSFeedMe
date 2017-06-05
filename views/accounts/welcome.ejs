@@ -16,6 +16,15 @@
           </div>
           <div class="modal-body">
 
+            <% if (signupErrors.length > 0) { %>
+              <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" style="width: 21px;" data-dismiss="alert" aria-label="close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <%= signupErrors %>
+              </div>
+            <% } %>
+
             <form method="post" action="/signup">
 
               <div class="form-group">
@@ -28,7 +37,7 @@
                 <input type="text" class="form-control" name="username" placeholder="username">
               </div>
               <div class="form-group">
-                <input type="text" class="form-control" name="password" placeholder="password">
+                <input type="password" class="form-control" name="password" placeholder="password">
               </div>
 
               <button type="submit" class="btn btn-success">Submit</button>

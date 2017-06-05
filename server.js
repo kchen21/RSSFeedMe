@@ -4,6 +4,9 @@ let mongoose = require('mongoose');
 let bodyParser = require('body-parser');
 let ejs = require('ejs');
 let engine = require('ejs-mate');
+let session = require('express-session');
+let cookieParser = require('cookie-parser');
+let flash = require('express-flash');
 
 let User = require('./models/user');
 
@@ -26,6 +29,14 @@ app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(session({
+  resave: true,
+  saveUninitialized: true,
+  secret: secret.secretKey
+}));
+app.use(flash());
+
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 
