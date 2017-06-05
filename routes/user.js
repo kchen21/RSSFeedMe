@@ -5,7 +5,8 @@ let passportConfig = require('../config/passport');
 
 router.get('/welcome', (req, res, next) => {
   res.render('accounts/welcome', {
-    signupErrors: req.flash('signupErrors')
+    signupErrors: req.flash('signupErrors'),
+    loginMessage: req.flash('loginMessage')
   });
 });
 
@@ -30,11 +31,6 @@ router.post('/signup', (req, res, next) => {
     }
 
   });
-});
-
-router.get('/login', (req, res) => {
-  if (req.user) return res.redirect('/');
-  res.render('accounts/welcome', { loginMessage: req.flash('loginMessage') });
 });
 
 router.post('/login', passport.authenticate('local-login', {

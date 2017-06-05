@@ -53,7 +53,7 @@
     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#loginModal">Existing User</button>
 
     <div id="loginModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
+      <div class="modal-dialog custom-modal-dialog">
 
         <div class="modal-content">
           <div class="modal-header">
@@ -61,7 +61,29 @@
             <h4 class="modal-title">Login</h4>
           </div>
           <div class="modal-body">
-            <p>Some text in the modal.</p>
+
+            <% if (loginMessage.length > 0) { %>
+              <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" style="width: 21px;" data-dismiss="alert" aria-label="close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <%= loginMessage %>
+              </div>
+            <% } %>
+
+            <form method="post" action="/login">
+
+              <div class="form-group">
+                <input type="text" class="form-control" name="username" placeholder="username">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="password">
+              </div>
+
+              <button type="submit" class="btn btn-success">Submit</button>
+
+            </form>
+
           </div>
         </div>
 
