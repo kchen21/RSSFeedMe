@@ -9,10 +9,20 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+}
+
+.welcome > h1 {
   color: white;
   text-shadow: 1px 1px 5px #212421, 2px 2px 5px #212021;
 }
 
 .welcome > p {
   margin: 20px;
+  color: white;
+  text-shadow: 1px 1px 5px #212421, 2px 2px 5px #212021;
+}
+
+.welcome > button {
+  color: white;
+  text-shadow: 1px 1px 5px #212421, 2px 2px 5px #212021;
 }
