@@ -7,7 +7,7 @@
     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#signupModal">Get Started</button>
 
     <div id="signupModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
+      <div class="modal-dialog custom-modal-dialog">
 
         <div class="modal-content">
           <div class="modal-header">
@@ -19,20 +19,16 @@
             <form method="post" action="/signup">
 
               <div class="form-group">
-                <label="name">Name: </label>
-                <input type="text" class="form-control" name="name">
+                <input type="text" class="form-control" name="name" placeholder="name">
               </div>
               <div class="form-group">
-                <label="email">Email: </label>
-                <input type="text" class="form-control" name="email">
+                <input type="text" class="form-control" name="email" placeholder="email">
               </div>
               <div class="form-group">
-                <label="username">Username: </label>
-                <input type="text" class="form-control" name="username">
+                <input type="text" class="form-control" name="username" placeholder="username">
               </div>
               <div class="form-group">
-                <label="password">Password: </label>
-                <input type="text" class="form-control" name="password">
+                <input type="text" class="form-control" name="password" placeholder="password">
               </div>
 
               <button type="submit" class="btn btn-success">Submit</button>
