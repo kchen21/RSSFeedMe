@@ -1,0 +1,18 @@
+/*welcome*/
+.welcome {
+  height: calc(100vh - 31px);
+  margin-top: 31px;
+  padding: 5% 10%;
+  background-color: black;
+  background-image: url(../images/welcome_page_bg.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  color: white;
+  text-shadow: 1px 1px 5px #212421, 2px 2px 5px #212021;
+}
+
+.welcome > p {
+  margin: 20px;
+}
