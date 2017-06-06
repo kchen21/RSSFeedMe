@@ -1,102 +1,115 @@
-<% layout('layout') -%>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>RSSFeedMe</title>
 
-<div class="welcome">
-    <h1>Welcome to RSSFeedMe!</h1>
-    <p>Feed your need for the latest news and information, all in one place!</p>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
+  </head>
 
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#signupModal">Get Started</button>
+  <body>
+    <% include ../partials/javascript %>
 
-    <div id="signupModal" class="modal fade" role="dialog">
-      <div class="modal-dialog custom-modal-dialog">
+    <div class="welcome">
+        <h1>Welcome to RSSFeedMe!</h1>
+        <p>Feed your need for the latest news and information, all in one place!</p>
 
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Signup</h4>
-          </div>
-          <div class="modal-body">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#signupModal">Get Started</button>
 
-            <% if (signupErrors.length > 0) { %>
-              <div class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" style="width: 21px;" data-dismiss="alert" aria-label="close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <%= signupErrors %>
+        <div id="signupModal" class="modal fade" role="dialog">
+          <div class="modal-dialog custom-modal-dialog">
+
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Signup</h4>
               </div>
-            <% } %>
+              <div class="modal-body">
 
-            <form method="post" action="/signup">
+                <% if (signupErrors.length > 0) { %>
+                  <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" style="width: 21px;" data-dismiss="alert" aria-label="close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= signupErrors %>
+                  </div>
+                <% } %>
 
-              <div class="form-group">
-                <input type="text" class="form-control" name="name" placeholder="name">
+                <form method="post" action="/signup">
+
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="name" placeholder="name">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="email" placeholder="email">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="username">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="password">
+                  </div>
+
+                  <button type="submit" class="btn btn-success">Submit</button>
+
+                </form>
+
               </div>
-              <div class="form-group">
-                <input type="text" class="form-control" name="email" placeholder="email">
-              </div>
-              <div class="form-group">
-                <input type="text" class="form-control" name="username" placeholder="username">
-              </div>
-              <div class="form-group">
-                <input type="password" class="form-control" name="password" placeholder="password">
-              </div>
-
-              <button type="submit" class="btn btn-success">Submit</button>
-
-            </form>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#loginModal">Existing User</button>
-
-    <div id="loginModal" class="modal fade" role="dialog">
-      <div class="modal-dialog custom-modal-dialog">
-
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Login</h4>
-          </div>
-          <div class="modal-body">
-
-            <% if (loginMessage.length > 0) { %>
-              <div class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" style="width: 21px;" data-dismiss="alert" aria-label="close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <%= loginMessage %>
-              </div>
-            <% } %>
-
-            <form method="post" action="/login">
-
-              <div class="form-group">
-                <input type="text" class="form-control" name="username" placeholder="username">
-              </div>
-              <div class="form-group">
-                <input type="password" class="form-control" name="password" placeholder="password">
-              </div>
-
-              <button type="submit" class="btn btn-success">Submit</button>
-
-            </form>
+            </div>
 
           </div>
         </div>
 
-      </div>
-    </div>
-</div>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#loginModal">Existing User</button>
 
-<% if (signupErrors.length > 0) { %>
-  <script type="text/javascript">
-    $('#signupModal').modal('show');
-  </script>
-<% } else if (loginMessage.length > 0) { %>
-  <script type="text/javascript">
-    $('#loginModal').modal('show');
-  </script>
-<% } %>
+        <div id="loginModal" class="modal fade" role="dialog">
+          <div class="modal-dialog custom-modal-dialog">
+
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Login</h4>
+              </div>
+              <div class="modal-body">
+
+                <% if (loginMessage.length > 0) { %>
+                  <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" style="width: 21px;" data-dismiss="alert" aria-label="close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= loginMessage %>
+                  </div>
+                <% } %>
+
+                <form method="post" action="/login">
+
+                  <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="username">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="password">
+                  </div>
+
+                  <button type="submit" class="btn btn-success">Submit</button>
+
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+    <% if (signupErrors.length > 0) { %>
+      <script type="text/javascript">
+        $('#signupModal').modal('show');
+      </script>
+    <% } else if (loginMessage.length > 0) { %>
+      <script type="text/javascript">
+        $('#loginModal').modal('show');
+      </script>
+    <% } %>
+  </body>
+</html>

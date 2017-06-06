@@ -28,8 +28,7 @@
 /*Welcome*/
 
 .welcome {
-  height: calc(100vh - 31px);
-  margin-top: 31px;
+  height: 100vh;
   padding: 5% 10%;
   background-color: black;
   background-image: url(../images/welcome_page_bg.jpg);
