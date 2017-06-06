@@ -5,15 +5,27 @@
     </div>
 
     <ul class="nav navbar-nav navbar-right">
-      <li>
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Username</a>
-        <ul class="dropdown-menu">
-          <li>
-            <button type="button" class="profile-button" data-toggle="modal" data-target="#profileModal">Profile</button>
-          </li>
-          <li><a href="/logout">Logout</a></li>
-        </ul>
-      </li>
+
+      <% if (!user) { %>
+        <li>
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Sign Up / Login</a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Sign Up</a></li>
+            <li><a href="#">Login</a></li>
+          </ul>
+        </li>
+      <% } else { %>
+        <li>
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= user.username %></a>
+          <ul class="dropdown-menu">
+            <li>
+              <button type="button" class="dropdown-button" data-toggle="modal" data-target="#profileModal">Profile</button>
+            </li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </li>
+      <% } %>
+
     </ul>
   </div>
 
