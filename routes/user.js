@@ -18,10 +18,14 @@ router.post('/signup', (req, res, next) => {
   user.username = req.body.username;
   user.password_digest = req.body.password;
 
-  User.findOne({ email: req.body.email }, (err, existingUser) => {
+  User.findOne({ $or: [{ email: req.body.email }, { username: req.body.username }] }, (err, existingUser) => {
 
     if (existingUser) {
-      req.flash('signupErrors', "Account with that email address already exists");
+      if (existingUser.email === req.body.email) {
+        req.flash('signupErrors', "Email is already registered");
+      } else if (existingUser.username === req.body.username) {
+        req.flash('signupErrors', "Username is already taken");
+      }
       return res.redirect('/welcome');
     } else {
       user.save((err, user) => {
