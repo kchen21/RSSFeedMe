@@ -6,6 +6,23 @@
   padding: 3px 20px;
 }
 
+.profile > img {
+  margin: 0 auto;
+}
+
+.profile > .heading {
+  margin: 10px 0; 
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.profile > .info {
+  display: block;
+  width: 300px;
+  margin: 0 auto;
+}
+
 /*Welcome*/
 
 .welcome {

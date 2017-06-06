@@ -28,7 +28,14 @@
         <h4 class="modal-title">Profile</h4>
       </div>
       <div class="modal-body">
-        
+        <div class="profile">
+          <img class="img-circle img-responsive img-center" src="<%= user.avatar_url || '/images/default_profile_picture.png' %>">
+          <p class="heading"><%= user.username %></p>
+          <div class="info">
+            <p>Name: <%= user.name %></p>
+            <p>Email: <%= user.email %></p>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
