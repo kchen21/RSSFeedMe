@@ -90,3 +90,13 @@
       </div>
     </div>
 </div>
+
+<% if (signupErrors.length > 0) { %>
+  <script type="text/javascript">
+    $('#signupModal').modal('show');
+  </script>
+<% } else if (loginMessage.length > 0) { %>
+  <script type="text/javascript">
+    $('#loginModal').modal('show');
+  </script>
+<% } %>
