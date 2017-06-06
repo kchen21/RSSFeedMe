@@ -1,7 +1,11 @@
 let router = require('express').Router();
 
 router.get('/', (req, res) => {
-  res.render('main/today');
+  if (req.user) {
+    res.render('main/today');
+  } else {
+    res.redirect('/welcome');
+  }
 });
 
 module.exports = router;
