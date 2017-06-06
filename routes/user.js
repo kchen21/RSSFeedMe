@@ -43,8 +43,19 @@ router.post('/login', passport.authenticate('local-login', {
   failureFlash: true
 }));
 
-router.get('/profile', (req, res) => {
-  res.json(req.user);
+router.post('/edit-profile', (req, res, next) => {
+  User.findOne({ _id: req.user._id }, (err, foundUser) => {
+    if (err) return next(err);
+
+    if (req.body.name) foundUser.name = req.body.name;
+    if (req.body.email) foundUser.email = req.body.email;
+
+    foundUser.save((err) => {
+      if (err) return next(err);
+      req.flash('successMessage', 'Successfully updated profile');
+      return res.redirect('/');
+    });
+  });
 });
 
 router.get('/logout', (req, res) => {
