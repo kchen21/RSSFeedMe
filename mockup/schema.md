@@ -3,61 +3,61 @@
 ## users
 column name     | data type | details
 ----------------|-----------|-----------------------
-id              | integer   | not null, primary key
-name            | string    | not null
-email           | string    | not null
-username        | string    | not null
-password_digest | string    | not null
-avatar_url      | string    |
+id              | Number    | not null, primary key
+name            | String    | not null
+email           | String    | not null
+username        | String    | not null
+password_digest | String    | not null
+avatar_url      | String    |
 
 ## collections
 column name     | data type | details
 ----------------|-----------|-----------------------
-id              | integer   | not null, primary key
-title           | string    | not null
-user_id         | integer   | not null (references users)
+id              | Number    | not null, primary key
+title           | String    | not null
+user_id         | Objectid  | not null (references users)
 
 ## feeds
 column name     | data type | details
 ----------------|-----------|-----------------------
-id              | integer   | not null, primary key
-url             | string    | not null
-title           | string    | not null
-description     | string    |
+id              | Number    | not null, primary key
+url             | String    | not null
+title           | String    | not null
+description     | String    |
 
 ## subscriptions
 column name     | data type | details
 ----------------|-----------|-----------------------
-id              | integer   | not null, primary key
-collection_id   | integer   | not null (references collections)
-feed_id         | integer   | not null (references feeds)
+id              | Number    | not null, primary key
+collection_id   | Objectid  | not null (references collections)
+feed_id         | Objectid  | not null (references feeds)
 
 ## articles
 column name     | data type | details
 ----------------|-----------|-----------------------
-id              | integer   | not null, primary key
-title           | string    | not null
-author          | string    |
-content         | string    | not null
-date_published  | date      | not null
-link            | string    | not null
+id              | Number    | not null, primary key
+title           | String    | not null
+author          | String    |
+content         | String    | not null
+date_published  | Date      | not null
+link            | String    | not null
 
 ## bookmarks
 column name     | data type | details
 ----------------|-----------|-----------------------
-id              | integer   | not null, primary key
-user_id         | integer   | not null (references users)
-article_id      | integer   | not null (references articles)
+id              | Number    | not null, primary key
+user_id         | Objectid  | not null (references users)
+article_id      | Objectid  | not null (references articles)
 
 ## tags
 column name     | data type | details
 ----------------|-----------|-----------------------
-id              | integer   | not null, primary key
-name            | string    | not null
+id              | Number    | not null, primary key
+name            | String    | not null
 
 ## taggings
 column name     | data type | details
 ----------------|-----------|-----------------------
-id              | integer   | not null, primary key
-feed_id         | integer   | not null (references feeds)
-tag_id          | integer   | not null (references tags)
+id              | Number    | not null, primary key
+feed_id         | Objectid  | not null (references feeds)
+tag_id          | Objectid  | not null (references tags)
