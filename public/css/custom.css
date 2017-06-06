@@ -1,3 +1,11 @@
+/*Navbar*/
+
+.profile-button {
+  border: none;
+  background-color: white;
+  padding: 3px 20px;
+}
+
 /*Welcome*/
 
 .welcome {

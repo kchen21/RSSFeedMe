@@ -43,4 +43,8 @@ router.post('/login', passport.authenticate('local-login', {
   failureFlash: true
 }));
 
+router.get('/profile', (req, res) => {
+  res.json(req.user);
+});
+
 module.exports = router;
