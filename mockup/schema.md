@@ -23,7 +23,7 @@ column name     | data type | details
 id              | integer   | not null, primary key
 url             | string    | not null
 title           | string    | not null
-description     | text      |
+description     | string    |
 
 ## subscriptions
 column name     | data type | details
@@ -38,7 +38,7 @@ column name     | data type | details
 id              | integer   | not null, primary key
 title           | string    | not null
 author          | string    |
-content         | text      | not null
+content         | string    | not null
 date_published  | date      | not null
 link            | string    | not null
 
