@@ -1,9 +1,9 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
-let CollectionSchema = new Schema({
+let PersonalCollectionSchema = new Schema({
   title: { type: String, required: true },
   user: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
-module.exports = mongoose.model('Collection', CollectionSchema);
+module.exports = mongoose.model('PersonalCollection', PersonalCollectionSchema);
