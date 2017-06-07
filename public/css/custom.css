@@ -96,9 +96,13 @@
   padding: 20px;
 }
 
-.sidebar-main > .link {
+.sidebar-main > a {
+  display: block;
+  width: 100%;
   margin: 5px 0;
   padding: 5px;
+  text-decoration: none;
+  color: white;
 }
 
 .feeds-index {
