@@ -2,7 +2,10 @@ let router = require('express').Router();
 let Feed = require('../models/feed');
 
 router.get('/add-feed-support', (req, res, next) => {
-  res.render('/admin/add-feed-support', { adminMessages: req.flash('adminMessages') });
+  res.render('admin/add-feed-support', {
+    profileMessages: req.flash('profileMessages'),
+    adminMessages: req.flash('adminMessages')
+  });
 });
 
 router.post('/add-feed-support', (req, res, next) => {

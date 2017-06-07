@@ -16,6 +16,7 @@ let secret = require('./config/secret');
 
 let mainRoutes = require('./routes/main');
 let userRoutes = require('./routes/user');
+let adminRoutes = require('./routes/admin');
 
 let app = express();
 
@@ -51,6 +52,7 @@ app.set('view engine', 'ejs');
 
 app.use(mainRoutes);
 app.use(userRoutes);
+app.use(adminRoutes);
 
 app.listen(secret.port, (err) => {
   if (err) throw err;
