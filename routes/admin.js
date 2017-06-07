@@ -11,8 +11,6 @@ router.get('/add-feed-support', (req, res, next) => {
 router.post('/add-feed-support', (req, res, next) => {
   let feed = new Feed();
   feed.url = req.body.url;
-  feed.title = req.body.title;
-  feed.description = req.body.description;
 
   feed.save((err) => {
     if (err) return next(err);
