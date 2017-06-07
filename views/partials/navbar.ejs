@@ -30,12 +30,12 @@
       <div class="modal-body">
         <form method="post" action="/edit-profile">
           <div class="profile">
-            <% if (successMessage.length > 0) { %>
+            <% if (profileMessages.length > 0) { %>
               <div class="alert alert-success alert-dismissible">
                 <button type="button" class="close" style="width: 21px;" data-dismiss="alert" aria-label="close">
                   <span aria-hidden="true">&times;</span>
                 </button>
-                <%= successMessage %>
+                <%= profileMessages %>
               </div>
             <% } %>
             <img class="img-circle img-responsive img-center" src="<%= user.avatar_url || '/images/default_profile_picture.png' %>">
@@ -62,7 +62,7 @@
   </div>
 </div>
 
-<% if (successMessage.length > 0) { %>
+<% if (profileMessages.length > 0) { %>
   <script type="text/javascript">
     $('#profileModal').modal('show');
   </script>

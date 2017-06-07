@@ -21,11 +21,11 @@ passport.use('local-login', new LocalStrategy({
     if (err) return done(err);
 
     if (!user) {
-      return done(null, false, req.flash('loginMessage', 'No user has been found'));
+      return done(null, false, req.flash('loginMessages', 'No user has been found'));
     }
 
     if (!user.comparePassword(password)) {
-      return done(null, false, req.flash('loginMessage', 'Password is incorrect'));
+      return done(null, false, req.flash('loginMessages', 'Password is incorrect'));
     }
 
     return done(null, user);

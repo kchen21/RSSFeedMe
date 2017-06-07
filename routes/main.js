@@ -3,7 +3,7 @@ let router = require('express').Router();
 router.get('/', (req, res) => {
   if (req.user) {
     res.render('main/today', {
-      successMessage: req.flash('successMessage')
+      profileMessages: req.flash('profileMessages')
     });
   } else {
     res.redirect('/welcome');
