@@ -10,7 +10,11 @@ router.get('/add-feed-support', (req, res, next) => {
 
 router.post('/add-feed-support', (req, res, next) => {
   let feed = new Feed();
-  feed.url = req.body.url;
+  feed.xml_url = req.body.xml_url;
+  feed.title = req.body.title;
+  feed.description = req.body.description;
+  feed.link = req.body.link;
+  feed.image_url = req.body.image_url;
 
   feed.save((err) => {
     if (err) return next(err);

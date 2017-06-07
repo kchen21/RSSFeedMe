@@ -21,9 +21,11 @@ user_id         | Objectid  | not null (references users)
 column name     | data type | details
 ----------------|-----------|-----------------------
 id              | Number    | not null, primary key
-url             | String    | not null
+xml_url         | String    | not null
 title           | String    | not null
+link            | String    |
 description     | String    |
+image_url       | String    |
 
 ## subscriptions
 column name     | data type | details
