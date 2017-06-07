@@ -28,14 +28,14 @@
 }
 
 .custom-modal-dialog {
-  width: 400px;
+  width: 360px;
   margin: 100px auto;
 }
 
 .welcome form button {
   display: block;
   width: 100%;
-  margin: 0 auto;
+  margin: 10px auto;
 }
 
 
@@ -48,6 +48,7 @@
 }
 
 .content {
+  width: calc(100vw - 270px);
   height: 100vh;
   padding: 0 20px;
 }
