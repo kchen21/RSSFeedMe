@@ -39,13 +39,27 @@
 }
 
 
+/*Homepage*/
+
+.sidebar-and-content {
+  display: flex;
+  height: calc(100vh - 50px);
+  margin-top: 50px;
+}
+
+.content {
+  height: 100vh;
+  padding: 0 20px;
+}
+
+
 /*Navbar*/
 
 .dropdown-button {
   width: 100%;
   border: none;
-  background-color: white;
   padding: 3px 20px;
+  background-color: white;
   text-align: left;
 }
 
@@ -66,12 +80,56 @@
   margin: 0 auto;
 }
 
+
 /*Sidebar*/
 
 .sidebar {
-  display: block;
   width: 270px;
-  margin-top: 50px;
-  background: #2A2B2F;
+  height: 100%;
+  background-color: #2A2B2F;
+  color: white;
+  position: relative;
+}
+
+.sidebar-main {
+  padding: 20px;
+}
+
+.sidebar-main > .link {
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.feeds-index {
+  padding: 0;
+}
+
+.feeds-index > h2 {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+}
+
+.sidebar-footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.add-feed {
+  display: block;
+  width: 100%;
+  height: 51px;
+  background-color: #31b0d5;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  font-size: 12px;
+  line-height: 51px;
+  text-shadow: 1px 1px 5px #212421, 2px 2px 5px #212021;
+}
+
+.add-feed:hover {
+  text-decoration: none;
   color: white;
 }

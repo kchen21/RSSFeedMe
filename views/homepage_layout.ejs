@@ -12,8 +12,10 @@
     <% include ./partials/javascript %>
 
     <% include ./partials/navbar %>
-    <% include ./partials/sidebar %>
 
-    <%- body -%>
+    <div class="sidebar-and-content">
+      <% include ./partials/sidebar %>
+      <div class="content"><%- body -%></div>
+    <div>
   </body>
 </html>
