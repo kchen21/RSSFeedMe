@@ -2,7 +2,6 @@ let router = require('express').Router();
 let User = require('../models/user');
 let PersonalCollection = require('../models/personal_collection');
 let Feed = require('../models/feed');
-let Subscription = require('../models/subscription');
 
 router.get('/', (req, res) => {
   if (req.user) {

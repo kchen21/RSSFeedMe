@@ -27,13 +27,6 @@ link            | String    |
 description     | String    |
 image_url       | String    |
 
-## subscriptions
-column name     | data type | details
-----------------|-----------|-----------------------
-id              | Number    | not null, primary key
-collection_id   | Objectid  | not null (references collections)
-feed_id         | Objectid  | not null (references feeds)
-
 ## articles
 column name     | data type | details
 ----------------|-----------|-----------------------
