@@ -172,3 +172,7 @@
 .feeds .info > p {
   margin: 0 auto;
 }
+
+.feeds .subscribe-btn {
+  height: 50%;
+}
