@@ -11,7 +11,6 @@ let MongoStore = require('connect-mongo')(session);
 let passport = require('passport');
 
 let User = require('./models/user');
-let PersonalCollection = require('./models/personal_collection');
 
 let secret = require('./config/secret');
 
@@ -46,13 +45,6 @@ app.use(passport.session());
 app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
-});
-app.use((req, res, next) => {
-  PersonalCollection.find({ user: req.user._id }, (err, collections) => {
-    if (err) return next(err);
-    res.locals.collections = collections;
-    next();
-  });
 });
 
 app.engine('ejs', engine);

@@ -1,5 +1,6 @@
 let router = require('express').Router();
 let User = require('../models/user');
+let PersonalCollection = require('../models/personal_collection');
 let passport = require('passport');
 let passportConfig = require('../config/passport');
 
@@ -37,11 +38,23 @@ router.post('/signup', (req, res, next) => {
   });
 });
 
-router.post('/login', passport.authenticate('local-login', {
-  successRedirect: '/',
-  failureRedirect: '/welcome',
-  failureFlash: true
-}));
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local-login', (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.redirect('/welcome');
+
+    PersonalCollection.find({ user: user._id }, (err, collections) => {
+      if (err) return next(err);
+      req.app.locals.collections = collections;
+      next();
+    });
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+      return res.redirect('/');
+    });
+  })(req, res, next);
+});
 
 router.post('/edit-profile', (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, foundUser) => {
