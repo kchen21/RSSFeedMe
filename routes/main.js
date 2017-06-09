@@ -23,4 +23,19 @@ router.get('/feeds', (req, res, next) => {
 
 });
 
+router.post('/collection', (req, res, next) => {
+  User.findOne({ _id: req.user._id }, (err, foundUser) => {
+    if (err) return next(err);
+
+    let collection = new PersonalCollection();
+    collection.title = req.body.title;
+    collection.user = foundUser._id;
+
+    collection.save((err) => {
+      if (err) return next(err);
+      res.redirect(req.get('referer'));
+    });
+  });
+});
+
 module.exports = router;
