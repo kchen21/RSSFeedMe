@@ -29,14 +29,12 @@
       </div>
       <div class="modal-body">
 
-        Subscription Errors
-
-        Collections
+        <p>Add to:</p>
 
         <select class="selectpicker">
-          <option>Collection 1</option>
-          <option>Collection 2</option>
-          <option>Collection 3</option>
+          <% collections.forEach((collection) => { %>
+            <option><%= collection.title %></option>
+          <% }) %>
         </select>
 
       </div>
