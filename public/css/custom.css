@@ -126,6 +126,11 @@
   color: rgba(255,255,255,0.3);
 }
 
+.feeds-index > li {
+  list-style-type: none;
+  padding: 0 10px;
+}
+
 .sidebar-footer {
   width: 100%;
   position: absolute;

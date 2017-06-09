@@ -8,6 +8,9 @@
 
     <ul class="feeds-index">
       <h2>COLLECTIONS</h2>
+      <% collections.forEach((collection) => { %>
+        <li><%= collection.title %></li>
+      <% }); %>
     </ul>
   </div>
 
