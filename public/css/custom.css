@@ -105,6 +105,18 @@
   color: white;
 }
 
+.sidebar-main > button {
+  display: block;
+  width: 100%;
+  margin: 30px auto;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 5px;
+  font-size: 24px;
+  font-weight: lighter;
+  color: rgba(255,255,255,0.3);
+  background-color: #2A2B2F;
+}
+
 .feeds-index {
   padding: 0;
 }
