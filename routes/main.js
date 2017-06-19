@@ -38,4 +38,15 @@ router.post('/collection', (req, res, next) => {
   });
 });
 
+router.post('/subscribe', (req, res, next) => {
+  PersonalCollection.findOne({ $and: [{ title: req.body.title }, { user: req.user._id }] }, (err, collection) => {
+    collection.feeds.push(req.body.feed._id);
+
+    collection.save((err) => {
+      if (err) return next(err);
+      return res.redirect('/feeds');
+    });
+  });
+});
+
 module.exports = router;
