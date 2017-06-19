@@ -13,7 +13,7 @@
         <p><%= feed.description %></p>
       </div>
 
-      <button type="button" class="btn btn-info btn-lg subscribe-btn" data-toggle="modal" data-target="#subscribeModal">Subscribe</button>
+      <button type="button" class="btn btn-info btn-lg subscribe-btn" data-toggle="modal" data-target="#subscribeModal" data-id="<%= feed._id %>">Subscribe</button>
 
     </li>
   <% }); %>
@@ -28,6 +28,7 @@
         <h4 class="modal-title">Subscribe</h4>
       </div>
       <div class="modal-body">
+        <input type="hidden" name="feedId" id="feedId" value=""/>
 
         <p>Add to:</p>
 
