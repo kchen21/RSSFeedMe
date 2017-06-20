@@ -1,4 +1,9 @@
-$(document).on("click", ".feeds button", function() {
-  var myfeedId = $(this).data('id');
-  $("#subscribeModal #feedId").val(myFeedId);
+$(function() {
+
+  $(document).on("click", ".subscribe-btn", function(e) {
+    e.preventDefault();
+    var myFeedId = $(this).data('id');
+    $("#subscribeModal #feedId").val(myFeedId);
+  });
+
 });
