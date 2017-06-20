@@ -39,7 +39,7 @@ router.post('/collection', (req, res, next) => {
 });
 
 router.post('/subscribe', (req, res, next) => {
-  PersonalCollection.findOne({ $and: [{ title: req.body.title }, { user: req.user._id }] }, (err, collection) => {
+  PersonalCollection.findOne({ $and: [{ _id: req.body.collectionId }, { user: req.user._id }] }, (err, collection) => {
     collection.feeds.push(req.body.feedId);
 
     collection.save((err) => {

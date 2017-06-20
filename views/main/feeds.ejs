@@ -27,18 +27,23 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Subscribe</h4>
       </div>
-      <div class="modal-body">
-        <input type="hidden" name="feedId" id="feedId" value=""/>
+      <form method="post" action="/subscribe">
+        <div class="modal-body">
+          <input type="hidden" name="feedId" id="feedId" value=""/>
 
-        <p>Add to:</p>
+          <p>Add to:</p>
 
-        <select class="selectpicker">
-          <% collections.forEach((collection) => { %>
-            <option><%= collection.title %></option>
-          <% }) %>
-        </select>
-
-      </div>
+          <select class="selectpicker" name="collectionId">
+            <% collections.forEach((collection) => { %>
+              <option value="<%= collection._id %>"><%= collection.title %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </form>
     </div>
 
   </div>
