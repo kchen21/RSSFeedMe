@@ -40,7 +40,7 @@ router.post('/collection', (req, res, next) => {
 
 router.post('/subscribe', (req, res, next) => {
   PersonalCollection.findOne({ $and: [{ _id: req.body.collectionId }, { user: req.user._id }] }, (err, collection) => {
-    collection.feeds.push(req.body.feedId);
+    collection.feeds.addToSet(req.body.feedId);
 
     collection.save((err) => {
       if (err) return next(err);
