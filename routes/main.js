@@ -55,7 +55,18 @@ router.post('/subscribe', (req, res, next) => {
 
     collection.save((err) => {
       if (err) return next(err);
-      return res.redirect('/feeds');
+
+      PersonalCollection
+        .find({ user: req.user._id })
+        .populate({
+          path: 'feeds',
+          model: 'Feed'
+        })
+        .exec((err, collections) => {
+          if (err) return next(err);
+          req.app.locals.collections = collections;
+          res.redirect('/feeds');
+        });
     });
   });
 });
