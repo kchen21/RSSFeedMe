@@ -75,16 +75,8 @@ router.get('/feed/:feed_id', (req, res, next) => {
   Feed.findOne({ _id: req.params.feed_id }, (err, feed) => {
     if (err) return next(err);
 
-    const getArticles = (url) => {
-      return ($.ajax({
-        type: "GET",
-        url: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%3D%22" + encodeURIComponent(`${url}`) + "%22&format=json&diagnostics=true&callback=",
-        dataType: 'json'
-      }));
-    };
-
-    return getArticles(feed.xml_url).then((feedData) => {
-      res.json(feedData);
+    res.render('/main/feed', {
+      feed: feed
     });
   });
 });
