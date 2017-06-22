@@ -43,11 +43,17 @@ router.post('/login', (req, res, next) => {
     if (err) return next(err);
     if (!user) return res.redirect('/welcome');
 
-    PersonalCollection.find({ user: user._id }, (err, collections) => {
-      if (err) return next(err);
-      req.app.locals.collections = collections;
-      next();
-    });
+    PersonalCollection
+      .find({ user: user._id })
+      .populate({
+        path: 'feeds',
+        model: 'Feed'
+      })
+      .exec((err, collections) => {
+        if (err) return next(err);
+        req.app.locals.collections = collections;
+        next();
+      });
 
     req.logIn(user, (err) => {
       if (err) return next(err);

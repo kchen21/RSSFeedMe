@@ -34,11 +34,17 @@ router.post('/collection', (req, res, next) => {
     collection.save((err) => {
       if (err) return next(err);
 
-      PersonalCollection.find({ user: req.user._id }, (err, collections) => {
-        if (err) return next(err);
-        req.app.locals.collections = collections;
-        res.redirect(req.get('referer'));
-      });
+      PersonalCollection
+        .find({ user: req.user._id })
+        .populate({
+          path: 'feeds',
+          model: 'Feed'
+        })
+        .exec((err, collections) => {
+          if (err) return next(err);
+          req.app.locals.collections = collections;
+          res.redirect(req.get('referer'));
+        });
     });
   });
 });
