@@ -20,7 +20,6 @@ router.get('/feeds', (req, res, next) => {
       feeds: feeds
     });
   });
-
 });
 
 router.post('/collection', (req, res, next) => {
@@ -75,7 +74,8 @@ router.get('/feed/:feed_id', (req, res, next) => {
   Feed.findOne({ _id: req.params.feed_id }, (err, feed) => {
     if (err) return next(err);
 
-    res.render('/main/feed', {
+    res.render('main/feed', {
+      profileMessages: req.flash('profileMessages'),
       feed: feed
     });
   });
