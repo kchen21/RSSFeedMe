@@ -9,7 +9,12 @@
     <ul class="feeds-index">
       <h2>COLLECTIONS</h2>
       <% collections.forEach((collection) => { %>
-        <li><%= collection.title %></li>
+        <li>
+          <h4><%= collection.title %></h4>
+          <% collection.feeds.forEach((feed) => { %>
+            <a href="#"><%= feed.title %></a>
+          <% }); %>
+        </li>
       <% }); %>
     </ul>
   </div>
