@@ -12,7 +12,10 @@
         <li>
           <h4><%= collection.title %></h4>
           <% collection.feeds.forEach((feed) => { %>
-            <a href="#"><%= feed.title %></a>
+            <a href="#">
+              <img src="<%= feed.image_url %>"/>
+              <p><%= feed.title %></p>
+            </a>
           <% }); %>
         </li>
       <% }); %>
