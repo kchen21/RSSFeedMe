@@ -9,12 +9,14 @@
         <% if (article.content) { %>
           <img src="<%= article.content.url %>"/>
         <% } else { %>
-          <img src=""/>
+          <img src="/images/article_icon.jpg"/>
         <% } %>
         <div class="article-info">
           <span class="article-title"><%= article.title %></span>
           <div class="article-creator-and-pub-date">
-            <span class="article-creator"><%= article.creator || "" %></span>
+            <% if (article.creator) { %>
+              <span class="article-creator"><%= article.creator %></span>
+            <% } %>
             <span class="article-pub-date"><%= article.pubDate %></span>
           </div>
           <% if (typeof article.description === "string") { %>
