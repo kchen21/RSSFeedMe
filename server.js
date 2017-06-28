@@ -54,6 +54,13 @@ app.use(mainRoutes);
 app.use(userRoutes);
 app.use(adminRoutes);
 
+app.use((req, res, next) => {
+  if (!app.locals.collections) {
+    res.redirect('/logout');
+  }
+  next();
+});
+
 app.listen(secret.port, (err) => {
   if (err) throw err;
   console.log("Server is running on port 3000");
