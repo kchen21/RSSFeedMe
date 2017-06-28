@@ -11,6 +11,7 @@ let MongoStore = require('connect-mongo')(session);
 let passport = require('passport');
 
 let User = require('./models/user');
+let PersonalCollection = require('./models/personal_collection');
 
 let secret = require('./config/secret');
 
@@ -43,8 +44,23 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
-  res.locals.user = req.user;
-  next();
+  if (req.user) {
+    res.locals.user = req.user;
+
+    PersonalCollection
+      .find({ user: req.user._id })
+      .populate({
+        path: 'feeds',
+        model: 'Feed'
+      })
+      .exec((err, collections) => {
+        if (err) return next(err);
+        req.app.locals.collections = collections;
+        next();
+      });
+  } else {
+    res.redirect('/welcome');
+  }
 });
 
 app.engine('ejs', engine);
@@ -53,13 +69,6 @@ app.set('view engine', 'ejs');
 app.use(mainRoutes);
 app.use(userRoutes);
 app.use(adminRoutes);
-
-app.use((req, res, next) => {
-  if (!req.user) {
-    res.redirect('/welcome');
-  }
-  next();
-});
 
 app.listen(secret.port, (err) => {
   if (err) throw err;
