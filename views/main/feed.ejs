@@ -2,22 +2,27 @@
 
 <h1><%= feed.title %></h1>
 
-<ul>
+<ul class="articles">
   <% articles.forEach((article) => { %>
     <li>
-      <a href="<%= article.guid.content %>">
+      <a class="clearfix" href="<%= article.guid.content %>">
         <% if (article.content) { %>
           <img src="<%= article.content.url %>"/>
         <% } else { %>
           <img src=""/>
         <% } %>
-        <%= article.title %>
-        <%= article.pubDate %>
-        <% if (typeof article.description === "string") { %>
-          <p><%= article.description %></p>
-        <% } else { %>
-          <p><%= article.description[1] %></p>
-        <% } %>
+        <div class="article-info">
+          <span class="article-title"><%= article.title %></span>
+          <div class="article-creator-and-pub-date">
+            <span class="article-creator"><%= article.creator || "" %></span>
+            <span class="article-pub-date"><%= article.pubDate %></span>
+          </div>
+          <% if (typeof article.description === "string") { %>
+            <p><%= article.description %></p>
+          <% } else { %>
+            <p><%= article.description[1] %></p>
+          <% } %>
+        </div>
       </a>
     </li>
   <% }); %>

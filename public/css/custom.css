@@ -1,3 +1,13 @@
+/*Clearfix*/
+
+.clearfix:after {
+   content: " ";
+   visibility: hidden;
+   display: block;
+   height: 0;
+   clear: both;
+}
+
 /*Welcome*/
 
 .welcome {
@@ -222,4 +232,53 @@
 
 .feeds .subscribe-btn {
   height: 50%;
+}
+
+/*Feed*/
+
+.articles {
+  display: block;
+  height: calc(100vh - 195px);
+  margin: 50px 40px 0 40px;
+  padding: 0;
+  overflow-y: scroll;
+}
+
+.articles > li {
+  list-style-type: none;
+  margin: 20px;
+}
+
+.articles > li:hover {
+  opacity: .5;
+}
+
+.articles a {
+  text-decoration: none;
+  color: black;
+}
+
+.articles img {
+  display: block;
+  width: 100px;
+  float: left;
+}
+
+.article-info {
+  display: block;
+  margin-left: 100px;
+  padding: 0 20px;
+}
+
+.article-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.article-creator-and-pub-date {
+  font-size: 12px;
+}
+
+.article-creator, .article-pub-date {
+  padding-right: 20px;
 }
