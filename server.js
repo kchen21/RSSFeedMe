@@ -55,8 +55,8 @@ app.use(userRoutes);
 app.use(adminRoutes);
 
 app.use((req, res, next) => {
-  if (!app.locals.collections) {
-    res.redirect('/logout');
+  if (!req.user) {
+    res.redirect('/welcome');
   }
   next();
 });
