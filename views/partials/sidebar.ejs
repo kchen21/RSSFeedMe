@@ -64,15 +64,14 @@
       </div>
       <form method="post" action="/remove-feed-from-collection">
         <div class="modal-body">
-          <input type="text" name="collectionId" id="collectionId" value=""/>
-          <input type="text" name="feedId" id="feedId" value=""/>
+          <input type="hidden" name="collectionId" id="collectionId" value=""/>
+          <input type="hidden" name="feedId" id="feedId" value=""/>
 
           <p>
-            Delete
-            <input type="text" name="feedTitle" id="feedTitle" value=""/>
-            from
-            <input type="text" name="collectionTitle" id="collectionTitle" value=""/>
-            ?
+            You are about to remove:
+            <input type="text" name="feedTitle" id="feedTitle" value="" readonly/>
+            from:
+            <input type="text" name="collectionTitle" id="collectionTitle" value="" readonly/>
           <p>
         </div>
         <div class="modal-footer">

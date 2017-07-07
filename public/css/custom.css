@@ -204,6 +204,12 @@
   color: white;
 }
 
+#deleteFeedModal p > input {
+  display: block;
+  border: none;
+  color: #31b0d5;
+}
+
 
 /*Feeds*/
 
