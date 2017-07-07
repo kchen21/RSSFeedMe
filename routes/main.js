@@ -91,7 +91,7 @@ router.get('/feed/:feed_id', (req, res, next) => {
   });
 });
 
-router.post('/remove-feed-from-collection', function(req res, next) {
+router.post('/remove-feed-from-collection', function(req, res, next) {
   PersonalCollection.findOne({ $and: [{ _id: req.body.collectionId }, { user: req.user._id }] }, (err, collection) => {
     collection.feeds.pull(req.body.feedId);
 

@@ -15,6 +15,9 @@
             <a href="/feed/<%= feed._id %>">
               <img src="<%= feed.image_url %>"/>
               <p><%= feed.title %></p>
+              <button type="button" class="dropdown-button delete-button" data-toggle="modal" data-target="#deleteFeedModal">
+                <img src="images/delete_icon.png" />
+              </button>
             </a>
           <% }); %>
         </li>
