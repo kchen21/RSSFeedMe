@@ -171,11 +171,12 @@
   color: white;
 }
 
-.feeds-index .delete-button {
+.feeds-index .delete-btn {
   float: right;
   width: 20px;
   padding: 0;
   background: transparent;
+  border: none;
 }
 
 .sidebar-footer {
