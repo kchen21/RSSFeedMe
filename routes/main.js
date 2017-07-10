@@ -91,7 +91,7 @@ router.get('/feed/:feed_id', (req, res, next) => {
   });
 });
 
-router.post('/remove-feed-from-collection', function(req, res, next) {
+router.post('/remove-feed-from-collection', (req, res, next) => {
   PersonalCollection.findOne({ $and: [{ _id: req.body.collectionId }, { user: req.user._id }] }, (err, collection) => {
     collection.feeds.pull(req.body.feedId);
 
@@ -110,6 +110,24 @@ router.post('/remove-feed-from-collection', function(req, res, next) {
           res.redirect(req.get('referer'));
         });
     });
+  });
+});
+
+router.post('/delete-collection', (req, res, next) => {
+  PersonalCollection.remove({ $and: [{ _id: req.body.collectionId }, { user: req.user._id }] }, (err, collection) => {
+    if (err) return next(err);
+
+    PersonalCollection
+      .find({ user: req.user._id })
+      .populate({
+        path: 'feeds',
+        model: 'Feed'
+      })
+      .exec((err, collections) => {
+        if (err) return next(err);
+        req.app.locals.collections = collections;
+        res.redirect(req.get('referer'));
+      });
   });
 });
 
