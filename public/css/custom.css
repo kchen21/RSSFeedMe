@@ -141,12 +141,18 @@
   padding: 0 10px;
 }
 
-.feeds-index h4 {
+.feeds-index .collection {
   font-size: 14px;
   font-weight: normal;
+  color: white;
 }
 
-.feeds-index a {
+.feeds-index .collection:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.feeds-index .feed {
   display: block;
   margin: 2px;
   padding: 0 20px;
