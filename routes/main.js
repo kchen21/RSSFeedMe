@@ -137,7 +137,7 @@ router.post('/delete-collection', (req, res, next) => {
       .exec((err, collections) => {
         if (err) return next(err);
         req.app.locals.collections = collections;
-        res.redirect(req.get('referer'));
+        res.redirect('/');
       });
   });
 });

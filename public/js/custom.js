@@ -6,7 +6,7 @@ $(function() {
     $("#subscribeModal #feedId").val(myFeedId);
   });
 
-  $(document).on("click", ".delete-btn", function(e) {
+  $(document).on("click", ".feed-delete-btn", function(e) {
     e.preventDefault();
     var myCollectionId = $(this).data('collectionid');
     var myCollectionTitle = $(this).data('collectiontitle');
@@ -16,6 +16,14 @@ $(function() {
     $("#deleteFeedModal #collectionTitle").val(myCollectionTitle);
     $("#deleteFeedModal #feedId").val(myFeedId);
     $("#deleteFeedModal #feedTitle").val(myFeedTitle);
+  });
+
+  $(document).on("click", ".collection-delete-btn", function(e) {
+    e.preventDefault();
+    var myCollectionId = $(this).data('collectionid');
+    var myCollectionTitle = $(this).data('collectiontitle');
+    $("#deleteCollectionModal #collectionId").val(myCollectionId);
+    $("#deleteCollectionModal #collectionTitle").val(myCollectionTitle);
   });
 
 });
