@@ -150,7 +150,7 @@ router.post('/bookmark', (req, res, next) => {
 
     let bookmark = new Bookmark();
     bookmark.link = req.body.link;
-    bookmark.image_url = req.body.img_url;
+    bookmark.image_url = req.body.image_url;
     bookmark.title = req.body.title;
     bookmark.creator = req.body.creator;
     bookmark.pub_date = req.body.pub_date;
