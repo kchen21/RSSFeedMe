@@ -1,6 +1,7 @@
 let router = require('express').Router();
 let User = require('../models/user');
 let PersonalCollection = require('../models/personal_collection');
+let Bookmark = require('../models/bookmark');
 let passport = require('passport');
 let passportConfig = require('../config/passport');
 
@@ -52,8 +53,16 @@ router.post('/login', (req, res, next) => {
       .exec((err, collections) => {
         if (err) return next(err);
         req.app.locals.collections = collections;
-        next();
       });
+
+    Bookmark.find({ user: user._id }, (err, bookmarks) => {
+      if (err) return next(err);
+
+      req.app.locals.bookmarkTitles = [];
+      bookmarks.forEach((bookmark) => {
+        req.app.locals.bookmarkTitles.push(bookmark.title);
+      });
+    });
 
     req.logIn(user, (err) => {
       if (err) return next(err);

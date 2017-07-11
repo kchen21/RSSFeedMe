@@ -12,6 +12,7 @@ let passport = require('passport');
 
 let User = require('./models/user');
 let PersonalCollection = require('./models/personal_collection');
+let Bookmark = require('./models/bookmark')
 
 let secret = require('./config/secret');
 
@@ -56,11 +57,19 @@ app.use((req, res, next) => {
       .exec((err, collections) => {
         if (err) return next(err);
         req.app.locals.collections = collections;
-        next();
       });
-  } else {
-    res.redirect('/welcome');
+
+    Bookmark.find({ user: req.user._id }, (err, bookmarks) => {
+      if (err) return next(err);
+
+      req.app.locals.bookmarkTitles = [];
+      bookmarks.forEach((bookmark) => {
+        req.app.locals.bookmarkTitles.push(bookmark.title);
+      });
+    });
   }
+
+  next();
 });
 
 app.engine('ejs', engine);

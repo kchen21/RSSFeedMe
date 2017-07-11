@@ -159,6 +159,7 @@ router.post('/bookmark', (req, res, next) => {
 
     bookmark.save((err) => {
       if (err) return next(err);
+      req.app.locals.bookmarkTitles.push(bookmark.title);
       res.redirect(req.get('referer'));
     });
   });
