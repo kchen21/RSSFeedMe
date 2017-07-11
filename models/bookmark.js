@@ -6,8 +6,9 @@ let BookmarkSchema = new Schema({
   image_url: String,
   title: { type: String, required: true },
   creator: String,
-  pubDate: { type: String, required: true },
-  description: { type: String, required: true }
+  pub_date: { type: String, required: true },
+  description: { type: String, required: true },
+  user: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
 module.exports = mongoose.model('Bookmark', BookmarkSchema);

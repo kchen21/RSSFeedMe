@@ -3,6 +3,8 @@ let request = require('request');
 let User = require('../models/user');
 let PersonalCollection = require('../models/personal_collection');
 let Feed = require('../models/feed');
+let Article = require('../models/article');
+let Bookmark = require('../models/bookmark');
 
 router.get('/', (req, res) => {
   if (req.user) {
@@ -139,6 +141,26 @@ router.post('/delete-collection', (req, res, next) => {
         req.app.locals.collections = collections;
         res.redirect('/');
       });
+  });
+});
+
+router.post('/bookmark', (req, res, next) => {
+  User.findOne({ _id: req.user._id }, (err, foundUser) => {
+    if (err) return next(err);
+
+    let bookmark = new Bookmark();
+    bookmark.link = req.body.link;
+    bookmark.image_url = req.body.img_url;
+    bookmark.title = req.body.title;
+    bookmark.creator = req.body.creator;
+    bookmark.pub_date = req.body.pub_date;
+    bookmark.description = req.body.description;
+    bookmark.user = foundUser._id;
+
+    bookmark.save((err) => {
+      if (err) return next(err);
+      res.redirect(req.get('referer'));
+    });
   });
 });
 
