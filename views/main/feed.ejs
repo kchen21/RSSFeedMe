@@ -28,31 +28,35 @@
           </div>
         </a>
       </div>
-      <form method="post" action="/bookmark">
-        <input type="hidden" name="link" value="<%= article.guid.content %>"/>
+      <% if (bookmarkTitles.includes(article.title)) { %>
+        <img class="bookmarked-icon" src="/images/bookmarked_icon.png"/>
+      <% } else { %>
+        <form method="post" action="/bookmark">
+          <input type="hidden" name="link" value="<%= article.guid.content %>"/>
 
-        <% if (article.content) { %>
-          <input type="hidden" name="image_url" value="<%= article.content.url %>"/>
-        <% } else { %>
-          <input type="hidden" name="image_url" value="/images/article_icon.jpg"/>
-        <% } %>
+          <% if (article.content) { %>
+            <input type="hidden" name="image_url" value="<%= article.content.url %>"/>
+          <% } else { %>
+            <input type="hidden" name="image_url" value="/images/article_icon.jpg"/>
+          <% } %>
 
-        <input type="hidden" name="title" value="<%= article.title %>"/>
+          <input type="hidden" name="title" value="<%= article.title %>"/>
 
-        <% if (article.creator) { %>
-          <input type="hidden" name="creator" value="<%= article.creator %>"/>
-        <% } %>
+          <% if (article.creator) { %>
+            <input type="hidden" name="creator" value="<%= article.creator %>"/>
+          <% } %>
 
-        <input type="hidden" name="pub_date" value="<%= article.pubDate %>"/>
+          <input type="hidden" name="pub_date" value="<%= article.pubDate %>"/>
 
-        <% if (typeof article.description === "string") { %>
-          <input type="hidden" name="description" value="<%= article.description %>"/>
-        <% } else { %>
-          <input type="hidden" name="description" value="<%= article.description[1] %>"/>
-        <% } %>
+          <% if (typeof article.description === "string") { %>
+            <input type="hidden" name="description" value="<%= article.description %>"/>
+          <% } else { %>
+            <input type="hidden" name="description" value="<%= article.description[1] %>"/>
+          <% } %>
 
-        <input class="bookmark-btn" type="image" name="submit" src="/images/add_bookmark_icon.png" border="0" alt="Submit" />
-      </form>
+          <input class="bookmark-btn" type="image" name="submit" src="/images/add_bookmark_icon.png" border="0" alt="Submit" />
+        </form>
+      <% } %>
     </li>
   <% }); %>
 </ul>

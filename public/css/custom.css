@@ -308,6 +308,14 @@
   padding-right: 20px;
 }
 
+.articles .bookmarked-icon {
+  width: 45px;
+  height: 45px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .articles form {
   width: 45px;
   height: 45px;
@@ -322,6 +330,10 @@
 
 .articles .bookmark-btn:hover {
   opacity: .5;
+}
+
+.articles .bookmark-btn:focus {
+  outline: none;
 }
 
 
