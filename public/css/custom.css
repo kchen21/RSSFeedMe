@@ -267,9 +267,14 @@
 .articles > li {
   list-style-type: none;
   margin: 20px;
+  position: relative;
 }
 
-.articles > li:hover {
+.articles .article {
+  width: calc(100% - 75px);
+}
+
+.articles .article:hover {
   opacity: .5;
 }
 
@@ -301,6 +306,22 @@
 
 .article-creator, .article-pub-date {
   padding-right: 20px;
+}
+
+.articles form {
+  width: 45px;
+  height: 45px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.articles .bookmark-btn {
+  width: 45px;
+}
+
+.articles .bookmark-btn:hover {
+  opacity: .5;
 }
 
 

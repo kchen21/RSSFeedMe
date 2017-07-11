@@ -5,27 +5,29 @@
 <ul class="articles">
   <% articles.forEach((article) => { %>
     <li>
-      <a class="clearfix" href="<%= article.guid.content %>">
-        <% if (article.content) { %>
-          <img src="<%= article.content.url %>"/>
-        <% } else { %>
-          <img src="/images/article_icon.jpg"/>
-        <% } %>
-        <div class="article-info">
-          <span class="article-title"><%= article.title %></span>
-          <div class="article-creator-and-pub-date">
-            <% if (article.creator) { %>
-              <span class="article-creator"><%= article.creator %></span>
-            <% } %>
-            <span class="article-pub-date"><%= article.pubDate %></span>
-          </div>
-          <% if (typeof article.description === "string") { %>
-            <p><%= article.description %></p>
+      <div class="article">
+        <a class="clearfix" href="<%= article.guid.content %>">
+          <% if (article.content) { %>
+            <img src="<%= article.content.url %>"/>
           <% } else { %>
-            <p><%= article.description[1] %></p>
+            <img src="/images/article_icon.jpg"/>
           <% } %>
-        </div>
-      </a>
+          <div class="article-info">
+            <span class="article-title"><%= article.title %></span>
+            <div class="article-creator-and-pub-date">
+              <% if (article.creator) { %>
+                <span class="article-creator"><%= article.creator %></span>
+              <% } %>
+              <span class="article-pub-date"><%= article.pubDate %></span>
+            </div>
+            <% if (typeof article.description === "string") { %>
+              <p><%= article.description %></p>
+            <% } else { %>
+              <p><%= article.description[1] %></p>
+            <% } %>
+          </div>
+        </a>
+      </div>
       <form method="post" action="/bookmark">
         <input type="hidden" name="link" value="<%= article.guid.content %>"/>
 
@@ -49,7 +51,7 @@
           <input type="hidden" name="description" value="<%= article.description[1] %>"/>
         <% } %>
 
-        <input type="image" name="submit" src="/images/add_bookmark_icon.png" border="0" alt="Submit" />
+        <input class="bookmark-btn" type="image" name="submit" src="/images/add_bookmark_icon.png" border="0" alt="Submit" />
       </form>
     </li>
   <% }); %>
