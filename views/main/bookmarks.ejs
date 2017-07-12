@@ -1,0 +1,25 @@
+<% layout('homepage_layout') -%>
+
+<h1>Bookmarks</h1>
+
+<ul class="articles">
+  <% bookmarks.forEach((bookmark) => { %>
+    <li>
+      <div class="article">
+        <a class="clearfix" href="<%= bookmark.link %>">
+          <img src="<%= bookmark.image_url %>"/>
+          <div class="article-info">
+            <span class="article-title"><%= bookmark.title %></span>
+            <div class="article-creator-and-pub-date">
+              <% if (bookmark.creator) { %>
+                <span class="article-creator"><%= bookmark.creator %></span>
+              <% } %>
+              <span class="article-pub-date"><%= bookmark.pub_date %></span>
+            </div>
+            <p><%= bookmark.description %></p>
+          </div>
+        </a>
+      </div>
+    </li>
+  <% }); %>
+</ul>
