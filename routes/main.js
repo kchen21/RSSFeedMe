@@ -165,4 +165,13 @@ router.post('/bookmark', (req, res, next) => {
   });
 });
 
+router.get('/bookmarks', (req, res, next) => {
+  Bookmark.find({}, (err, bookmarks) => {
+    res.render('main/bookmarks', {
+      profileMessages: req.flash('profileMessages'),
+      bookmarks: bookmarks
+    });
+  });
+});
+
 module.exports = router;
