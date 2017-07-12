@@ -347,3 +347,28 @@
 
 
 /*Bookmarks*/
+
+.articles .bookmark-delete-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: none;
+  font-size: 0;
+}
+
+.articles .bookmark-delete-btn > img {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.articles .bookmark-delete-btn:hover {
+  opacity: .5;
+}
+
+.articles .bookmark-delete-btn:focus {
+  outline: none;
+}

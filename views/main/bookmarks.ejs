@@ -20,6 +20,40 @@
           </div>
         </a>
       </div>
+      <button type="button" class="bookmark-delete-btn" data-toggle="modal" data-target="#deleteBookmarkModal" data-bookmarkid="<%= bookmark._id %>" data-bookmarktitle="<%= bookmark.title %>">
+        <img src="/images/delete_icon.png" />
+      </button>
     </li>
   <% }); %>
 </ul>
+
+<div id="deleteBookmarkModal" class="modal fade" role="dialog">
+  <div class="modal-dialog custom-modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Remove Bookmark</h4>
+      </div>
+      <form method="post" action="/remove-bookmark">
+        <div class="modal-body">
+          <input type="hidden" name="bookmarkId" id="bookmarkId" value=""/>
+          <input type="hidden" name="bookmarkTitle" id="bookmarkTitle" value=""/>
+
+          <p>
+            Remove bookmark?
+          </p>
+
+          <i>
+            Note: An article cannot be re-bookmarked if it is no longer part of its original RSS feed.
+          </i>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Confirm</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

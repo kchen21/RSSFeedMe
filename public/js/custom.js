@@ -26,4 +26,12 @@ $(function() {
     $("#deleteCollectionModal #collectionTitle").val(myCollectionTitle);
   });
 
+  $(document).on("click", ".bookmark-delete-btn", function(e) {
+    e.preventDefault();
+    var myBookmarkId = $(this).data('bookmarkid');
+    var myBookmarkTitle = $(this).data('bookmarktitle');
+    $("#deleteBookmarkModal #bookmarkId").val(myBookmarkId);
+    $("#deleteBookmarkModal #bookmarkTitle").val(myBookmarkTitle);
+  });
+
 });
