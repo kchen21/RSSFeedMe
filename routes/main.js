@@ -174,4 +174,18 @@ router.get('/bookmarks', (req, res, next) => {
   });
 });
 
+router.post('/delete-bookmark', (req, res, next) => {
+  Bookmark.remove({ $and: [{ _id: req.body.bookmarkId }, { user: req.user._id }] }, (err, bookmark) => {
+    if (err) return next(err);
+
+    let bookmarkTitleIndex = req.app.locals.bookmarkTitles.indexOf(bookmark.title);
+
+    if (bookmarkTitleIndex > -1) {
+      req.app.locals.bookmarkTitles.splice(bookmarkTitleIndex, 1);
+    }
+
+    res.redirect('/bookmarks');
+  });
+});
+
 module.exports = router;
