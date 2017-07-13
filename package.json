@@ -4,7 +4,7 @@
   "description": "RSSFeedMe is a full-stack app that gathers the latest news and information from RSS feeds that its users subscribe to.",
   "main": "server.js",
   "engines": {
-    "node": "6.10.0",
+    "node": "6.11.1",
     "npm": "3.10.10"
   },
   "scripts": {
