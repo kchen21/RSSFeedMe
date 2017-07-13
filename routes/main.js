@@ -3,7 +3,7 @@ let request = require('request');
 let User = require('../models/user');
 let PersonalCollection = require('../models/personal_collection');
 let Feed = require('../models/feed');
-let Article = require('../models/article');
+let RecentArticle = require('../models/recent_article');
 let Bookmark = require('../models/bookmark');
 
 router.get('/', (req, res) => {
@@ -185,6 +185,75 @@ router.post('/delete-bookmark', (req, res, next) => {
     }
 
     res.redirect('/bookmarks');
+  });
+});
+
+router.get('/today', (req, res, next) => {
+  RecentArticle.remove({}, (err, removedArticles) => {
+    if (err) return next(err);
+
+    PersonalCollection
+      .find({ user: req.user._id })
+      .populate({
+        path: 'feeds',
+        model: 'Feed'
+      })
+      .exec((err, collections) => {
+        if (err) return next(err);
+
+        collections.forEach((collection) => {
+          collection.feeds.forEach((feed) => {
+            let options = {
+              url: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%3D%22" + encodeURIComponent(feed.xml_url) + "%22&format=json&diagnostics=true&callback=",
+              method: 'GET'
+            };
+
+            request(options, (err, res, body) => {
+              let articles = JSON.parse(body).query.results.item;
+
+              articles.forEach((article) => {
+
+                let recentArticle = new RecentArticle();
+                recentArticle.link = article.guid.content;
+
+                if (article.content) {
+                  recentArticle.image_url = article.content.url;
+                } else {
+                  recentArticle.image_url = "/images/article_icon.jpg";
+                }
+
+                recentArticle.title = article.title;
+
+                if (article.creator) {
+                  recentArticle.creator = article.creator;
+                }
+
+                recentArticle.pub_date = article.pubDate;
+
+                if (typeof article.description === "string") {
+                  recentArticle.description = article.description;
+                } else {
+                  recentArticle.description = article.description[1];
+                }
+
+                recentArticle.feed = feed._id;
+                recentArticle.user = req.user._id;
+
+                recentArticle.save((err) => {
+                  if (err) return next(err);
+                });
+              });
+            });
+          });
+        });
+      });
+
+    Article.find({ user: req.user._id }, (err, articles) => {
+      res.render('main/today', {
+        profileMessages: req.flash('profileMessages'),
+        articles: articles;
+      });
+    });
   });
 });
 
