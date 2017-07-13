@@ -187,7 +187,7 @@ router.post('/delete-bookmark', (req, res, next) => {
 });
 
 router.get('/today', (req, res, next) => {
-  RecentArticle.remove({}, (err, removedArticles) => {
+  RecentArticle.remove({ user: req.user._id }, (err, removedArticles) => {
     if (err) return next(err);
 
     PersonalCollection
