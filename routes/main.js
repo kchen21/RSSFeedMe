@@ -1,5 +1,6 @@
 let router = require('express').Router();
 let request = require('request');
+let async = require('async');
 let User = require('../models/user');
 let PersonalCollection = require('../models/personal_collection');
 let Feed = require('../models/feed');
@@ -190,6 +191,8 @@ router.get('/today', (req, res, next) => {
   RecentArticle.remove({ user: req.user._id }, (err, removedArticles) => {
     if (err) return next(err);
 
+    const functions = [];
+
     PersonalCollection
       .find({ user: req.user._id })
       .populate({
@@ -206,52 +209,64 @@ router.get('/today', (req, res, next) => {
               method: 'GET'
             };
 
-            request(options, (err, res, body) => {
-              let articles = JSON.parse(body).query.results.item;
+            let requestFunction = (callback) => {
+              request(options, (err, res, body) => {
+                let articles = JSON.parse(body).query.results.item;
 
-              articles.forEach((article) => {
+                articles.forEach((article) => {
 
-                let recentArticle = new RecentArticle();
-                recentArticle.link = article.guid.content;
+                  let recentArticle = new RecentArticle();
+                  recentArticle.link = article.guid.content;
 
-                if (article.content) {
-                  recentArticle.image_url = article.content.url;
-                } else {
-                  recentArticle.image_url = "/images/article_icon.jpg";
-                }
+                  if (article.content) {
+                    recentArticle.image_url = article.content.url;
+                  } else {
+                    recentArticle.image_url = "/images/article_icon.jpg";
+                  }
 
-                recentArticle.title = article.title;
+                  recentArticle.title = article.title;
 
-                if (article.creator) {
-                  recentArticle.creator = article.creator;
-                }
+                  if (article.creator) {
+                    recentArticle.creator = article.creator;
+                  }
 
-                recentArticle.pub_date = article.pubDate;
+                  recentArticle.pub_date = article.pubDate;
 
-                if (typeof article.description === "string") {
-                  recentArticle.description = article.description;
-                } else {
-                  recentArticle.description = article.description[1];
-                }
+                  if (typeof article.description === "string") {
+                    recentArticle.description = article.description;
+                  } else {
+                    recentArticle.description = article.description[1];
+                  }
 
-                recentArticle.feed = feed._id;
-                recentArticle.user = req.user._id;
+                  recentArticle.feed = feed._id;
+                  recentArticle.user = req.user._id;
 
-                recentArticle.save((err) => {
-                  if (err) return next(err);
+                  recentArticle.save((err) => {
+                    if (err) return next(err);
+                  });
                 });
+
+                callback(err);
               });
-            });
+            };
+
+            functions.push(requestFunction);
           });
         });
-      });
 
-    RecentArticle.find({ user: req.user._id }, (err, articles) => {
-      res.render('main/today', {
-        profileMessages: req.flash('profileMessages'),
-        articles: articles
+        let renderTodayPage = () => {
+          RecentArticle.find({ user: req.user._id }, (err, articles) => {
+            res.render('main/today', {
+              profileMessages: req.flash('profileMessages'),
+              articles: articles
+            });
+          });
+        };
+
+        functions.push(renderTodayPage);
+
+        async.waterfall(functions);
       });
-    });
   });
 });
 
