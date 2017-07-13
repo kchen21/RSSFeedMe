@@ -8,9 +8,7 @@ let Bookmark = require('../models/bookmark');
 
 router.get('/', (req, res) => {
   if (req.user) {
-    res.render('main/today', {
-      profileMessages: req.flash('profileMessages')
-    });
+    res.redirect('/today');
   } else {
     res.redirect('/welcome');
   }
@@ -248,10 +246,10 @@ router.get('/today', (req, res, next) => {
         });
       });
 
-    Article.find({ user: req.user._id }, (err, articles) => {
+    RecentArticle.find({ user: req.user._id }, (err, articles) => {
       res.render('main/today', {
         profileMessages: req.flash('profileMessages'),
-        articles: articles;
+        articles: articles
       });
     });
   });
