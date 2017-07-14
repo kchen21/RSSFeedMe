@@ -12,13 +12,13 @@
             <span class="article-title"><%= article.title %></span>
             <div class="article-creator-and-pub-date">
               <% if (article.creator) { %>
-                <span class="article-creator"><%= article.creator %><span>
+                <span class="article-creator"><%= article.creator %></span>
               <% } %>
-              <span class="article-pub-date"><%= article.pub_date %><span>
+              <span class="article-pub-date"><%= article.pub_date %></span>
             </div>
             <p><%= article.description %></p>
           </div>
-        <a>
+        </a>
       </div>
       <% if (bookmarkTitles.includes(article.title)) { %>
         <img class="bookmarked-icon" src="/images/bookmarked_icon.png"/>
