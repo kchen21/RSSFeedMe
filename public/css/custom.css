@@ -66,6 +66,12 @@
 
 /*Navbar*/
 
+.navbar-header > img {
+  width: 50px;
+  float: left;
+  margin: 0 5px;
+}
+
 .dropdown-button {
   width: 100%;
   border: none;
