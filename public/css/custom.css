@@ -340,6 +340,18 @@
 
 /*Collection*/
 
+.collection-delete-btn {
+  float: right;
+  background: transparent;
+  border: none;
+  font-size: 0;
+}
+
+.collection-delete-btn > img {
+  width: 50px;
+  height: 50px;
+}
+
 #deleteCollectionModal p > input {
   display: block;
   border: none;

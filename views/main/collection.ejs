@@ -1,10 +1,12 @@
 <% layout('homepage_layout') -%>
 
-<h1><%= collection.title %></h1>
+<h1>
+  <%= collection.title %>
 
-<button type="button" class="collection-delete-btn" data-toggle="modal" data-target="#deleteCollectionModal" data-collectionid="<%= collection._id %>" data-collectiontitle="<%= collection.title %>">
-  Delete Collection
-</button>
+  <button type="button" class="collection-delete-btn" data-toggle="modal" data-target="#deleteCollectionModal" data-collectionid="<%= collection._id %>" data-collectiontitle="<%= collection.title %>">
+    <img src="/images/trash_icon.png"/>
+  </button>
+</h1>
 
 <ul class="articles">
   <% articles.forEach((article) => { %>
