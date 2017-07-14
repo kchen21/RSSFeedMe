@@ -115,12 +115,13 @@ router.post('/remove-feed-from-collection', (req, res, next) => {
 });
 
 router.get('/collection/:collection_id', (req, res, next) => {
-  PersonalCollection.findOne({ $and: [{ _id: req.params.collection_id }, { user: req.user._id }] }, (err, collection) => {
-    if (err) return next(err);
-
-    res.render('main/collection', {
-      profileMessages: req.flash('profileMessages'),
-      collection: collection
+  PersonalCollection.findOne({ $and: [{ _id: req.params.collection_id }, { user: req.user._id }] }, (err, collection) =>{
+    RecentArticle.find({ feed : { $in : collection.feeds } }, (err, articles) => {
+      res.render('main/collection', {
+        profileMessages: req.flash('profileMessages'),
+        collection: collection,
+        articles: articles
+      });
     });
   });
 });
