@@ -6,7 +6,7 @@ let BookmarkSchema = new Schema({
   image_url: String,
   title: { type: String, required: true, unique: true },
   creator: String,
-  pub_date: { type: String, required: true },
+  pub_date: String,
   description: { type: String, required: true },
   user: { type: Schema.Types.ObjectId, ref: 'User' }
 });

@@ -23,7 +23,10 @@
                 <% if (article.creator) { %>
                   <span class="article-creator"><%= article.creator %></span>
                 <% } %>
-                <span class="article-pub-date"><%= article.pub_date %></span>
+
+                <% if (article.pub_date) { %>
+                  <span class="article-pub-date"><%= article.pub_date %></span>
+                <% } %>
               </div>
               <p><%= article.description %></p>
             </div>
@@ -41,7 +44,10 @@
               <input type="hidden" name="creator" value="<%= article.creator %>"/>
             <% } %>
 
-            <input type="hidden" name="pub_date" value="<%= article.pub_date %>"/>
+            <% if (article.pub_date) { %>
+              <input type="hidden" name="pub_date" value="<%= article.pub_date %>"/>
+            <% } %>
+
             <input type="hidden" name="description" value="<%= article.description %>"/>
 
             <input class="bookmark-btn" type="image" name="submit" src="/images/add_bookmark_icon.png" border="0" alt="Submit" />

@@ -6,7 +6,7 @@ let RecentArticleSchema = new Schema({
   image_url: String,
   title: { type: String, required: true },
   creator: String,
-  pub_date: { type: String, required: true },
+  pub_date: String,
   description: { type: String, required: true },
   feed: { type: Schema.Types.ObjectId, ref: 'Feed' },
   user: { type: Schema.Types.ObjectId, ref: 'User' }

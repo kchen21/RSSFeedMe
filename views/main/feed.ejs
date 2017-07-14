@@ -18,7 +18,10 @@
               <% if (article.creator) { %>
                 <span class="article-creator"><%= article.creator %></span>
               <% } %>
-              <span class="article-pub-date"><%= article.pubDate %></span>
+
+              <% if (article.pubDate) { %>
+                <span class="article-pub-date"><%= article.pubDate %></span>
+              <% } %>
             </div>
             <% if (typeof article.description === "string") { %>
               <p><%= article.description %></p>
@@ -46,7 +49,9 @@
             <input type="hidden" name="creator" value="<%= article.creator %>"/>
           <% } %>
 
-          <input type="hidden" name="pub_date" value="<%= article.pubDate %>"/>
+          <% if (article.pubDate) { %>
+            <input type="hidden" name="pub_date" value="<%= article.pubDate %>"/>
+          <% } %>
 
           <% if (typeof article.description === "string") { %>
             <input type="hidden" name="description" value="<%= article.description %>"/>

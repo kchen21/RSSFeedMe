@@ -14,7 +14,10 @@
               <% if (bookmark.creator) { %>
                 <span class="article-creator"><%= bookmark.creator %></span>
               <% } %>
-              <span class="article-pub-date"><%= bookmark.pub_date %></span>
+
+              <% if (bookmark.pub_date) { %>
+                <span class="article-pub-date"><%= bookmark.pub_date %></span>
+              <% } %>
             </div>
             <p><%= bookmark.description %></p>
           </div>
