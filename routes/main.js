@@ -220,7 +220,7 @@ router.get('/today', (req, res, next) => {
                   recentArticle.link = article.guid.content;
 
                   if (article.content) {
-                    recentArticle.image_url = article.content.url;
+                    recentArticle.image_url = article.content.url || article.content[0].url;
                   } else {
                     recentArticle.image_url = "/images/article_icon.jpg";
                   }

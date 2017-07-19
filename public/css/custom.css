@@ -275,6 +275,7 @@
   list-style-type: none;
   margin: 20px;
   position: relative;
+  min-height: 100px;
 }
 
 .articles .article {
@@ -293,7 +294,10 @@
 .articles img {
   display: block;
   width: 100px;
-  float: left;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .article-info {
@@ -315,12 +319,25 @@
   padding-right: 20px;
 }
 
+.article-description img {
+  display: none;
+}
+
+.article-description .feedflare {
+  display: none;
+}
+
 .articles .bookmarked-icon {
   width: 45px;
   height: 45px;
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.articles .bookmarked-icon > img {
+  width: 45px;
+  height: 45px;
 }
 
 .articles form {

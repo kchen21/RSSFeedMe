@@ -6,7 +6,7 @@
   <% articles.forEach((article) => { %>
     <li>
       <div class="article">
-        <a class="clearfix" href="<%= article.link %>">
+        <a href="<%= article.link %>">
           <img src="<%= article.image_url %>"/>
           <div class="article-info">
             <span class="article-title"><%= article.title %></span>
@@ -19,12 +19,16 @@
                 <span class="article-pub-date"><%= article.pub_date %></span>
               <% } %>
             </div>
-            <p class="article-description"><%- article.description %></p>
+            <div class="article-description">
+              <p><%- article.description %></p>
+            </div>
           </div>
         </a>
       </div>
       <% if (bookmarkTitles.includes(article.title)) { %>
-        <img class="bookmarked-icon" src="/images/bookmarked_icon.png"/>
+        <div class="bookmarked-icon">
+          <img src="/images/bookmarked_icon.png"/>
+        </div>
       <% } else { %>
         <form method="post" action="/bookmark">
           <input type="hidden" name="link" value="<%= article.link %>"/>
