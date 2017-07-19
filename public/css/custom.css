@@ -327,6 +327,10 @@
   display: none;
 }
 
+.article-description a {
+  text-decoration: underline;
+}
+
 .articles .bookmarked-icon {
   width: 45px;
   height: 45px;
