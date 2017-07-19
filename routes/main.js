@@ -217,7 +217,7 @@ router.get('/today', (req, res, next) => {
                 articles.forEach((article) => {
 
                   let recentArticle = new RecentArticle();
-                  recentArticle.link = article.guid.content;
+                  recentArticle.link = typeof article.link === "string" ? article.link : article.link[0];
 
                   if (article.content) {
                     recentArticle.image_url = article.content.url || article.content[0].url;

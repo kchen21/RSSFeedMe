@@ -6,7 +6,11 @@
   <% articles.forEach((article) => { %>
     <li>
       <div class="article">
-        <a href="<%= article.guid.content %>">
+        <% if (typeof article.link === "string") { %>
+          <a href="<%= article.link %>">
+        <% } else { %>
+          <a href="<%= article.link[0] %>">
+        <% } %>
           <% if (article.content) { %>
             <img src="<%= article.content.url || article.content[0].url %>"/>
           <% } else { %>
@@ -39,7 +43,11 @@
         </div>
       <% } else { %>
         <form method="post" action="/bookmark">
-          <input type="hidden" name="link" value="<%= article.guid.content %>"/>
+          <% if (typeof article.link === "string") { %>
+            <input type="hidden" name="link" value="<%= article.link %>"/>
+          <% } else { %>
+            <input type="hidden" name="link" value="<%= article.link[0] %>"/>
+          <% } %>
 
           <% if (article.content) { %>
             <input type="hidden" name="image_url" value="<%= article.content.url || article.content[0].url %>"/>
