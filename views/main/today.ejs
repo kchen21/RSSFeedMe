@@ -19,7 +19,7 @@
                 <span class="article-pub-date"><%= article.pub_date %></span>
               <% } %>
             </div>
-            <p><%= article.description %></p>
+            <p class="article-description"><%- article.description %></p>
           </div>
         </a>
       </div>
@@ -38,7 +38,7 @@
           <% if (article.pub_date) { %>
             <input type="hidden" name="pub_date" value="<%= article.pub_date %>"/>
           <% } %>
-          
+
           <input type="hidden" name="description" value="<%= article.description %>"/>
 
           <input class="bookmark-btn" type="image" name="submit" src="/images/add_bookmark_icon.png" border="0" alt="Submit" />

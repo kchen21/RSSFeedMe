@@ -24,9 +24,9 @@
               <% } %>
             </div>
             <% if (typeof article.description === "string") { %>
-              <p><%= article.description %></p>
+              <p class="article-description"><%- article.description %></p>
             <% } else { %>
-              <p><%= article.description[1] %></p>
+              <p class="article-description"><%- article.description[1] %></p>
             <% } %>
           </div>
         </a>
