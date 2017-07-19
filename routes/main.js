@@ -233,7 +233,9 @@ router.get('/today', (req, res, next) => {
 
                   recentArticle.pub_date = article.pubDate;
 
-                  if (typeof article.description === "string") {
+                  if (article.description === null) {
+                    recentArticle.description = "Click to learn more!";
+                  } else if (typeof article.description === "string") {
                     recentArticle.description = article.description;
                   } else {
                     recentArticle.description = article.description[1];

@@ -28,7 +28,9 @@
               <% } %>
             </div>
             <div class="article-description">
-              <% if (typeof article.description === "string") { %>
+              <% if (article.description === null) { %>
+                <p>Click to learn more!</p>
+              <% } else if (typeof article.description === "string") { %>
                 <p><%- article.description %></p>
               <% } else { %>
                 <p><%- article.description[1] %></p>
@@ -65,7 +67,9 @@
             <input type="hidden" name="pub_date" value="<%= article.pubDate %>"/>
           <% } %>
 
-          <% if (typeof article.description === "string") { %>
+          <% if (article.description === null) { %>
+            <input type="hidden" name="description" value="Click to learn more!"/>
+          <% } else if (typeof article.description === "string") { %>
             <input type="hidden" name="description" value="<%= article.description %>"/>
           <% } else { %>
             <input type="hidden" name="description" value="<%= article.description[1] %>"/>
