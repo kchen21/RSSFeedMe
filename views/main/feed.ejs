@@ -42,7 +42,7 @@
           <input type="hidden" name="link" value="<%= article.guid.content %>"/>
 
           <% if (article.content) { %>
-            <input type="hidden" name="image_url" value="<%= article.content.url %>"/>
+            <input type="hidden" name="image_url" value="<%= article.content.url || article.content[0].url %>"/>
           <% } else { %>
             <input type="hidden" name="image_url" value="/images/article_icon.jpg"/>
           <% } %>
