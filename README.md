@@ -26,7 +26,7 @@ The administrator (me) can add feeds to RSSFeedMe for users to subscribe to. Eac
 
 Before subscribing to a feed, a user must create at least one collection, which will be stored as a `PersonalCollection` document. Users can create several collections and add feeds to each of them via the Feeds page, which loads when a user clicks 'Add Feed'. In fact, a user can add a feed to multiple collections.
 
-When a user subscribes to a feed, RSSFeedMe adds its title to the sidebar. Clicking on the title will render the feed page, which will load that feed's articles. RSSFeedMe fetches article data in real time using a Yahoo! API which organizes feed data from a feed URL and returns it as JSON. Below is the route I created for feed-fetching (Note that I used `request`):
+When a user subscribes to a feed, RSSFeedMe adds its title to the sidebar. Clicking on the title will render the Feed page, which will load that feed's articles. RSSFeedMe fetches article data in real time using a Yahoo! API which organizes feed data from a feed URL and returns it as JSON. Below is the route I created for feed-fetching (Note that I used `request`):
 
 ```javascript
 router.get('/feed/:feed_id', (req, res, next) => {
@@ -51,7 +51,7 @@ router.get('/feed/:feed_id', (req, res, next) => {
 
 ## Bookmark and RecentArticle
 
- I created Bookmark and RecentArticle models to store article data. Both require a link, title, and description, can accept an image URL, creator, and publication date, and belong to a user. RecentArticle, however, also belongs to a feed.
+ I created Bookmark and RecentArticle models to store article data. Both belong to a user, require a link, title, and description, and can accept an image URL, creator, and publication date. RecentArticle, however, also belongs to a feed.
 
  Bookmarks are, in essence, articles that a user can save for later viewing. Since feeds update on a regular basis, an article can disappear from a feed once enough time has passed. To ensure that a user has permanent access to an article he/she has bookmarked, I chose to create a back-up of its data and store it.
 
