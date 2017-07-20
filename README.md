@@ -8,7 +8,7 @@ RSSFeedMe is a full-stack web application that gathers the latest news and infor
 
 ## Features and Implementation
 
-# Online Database
+## Online Database
 
 RSSFeedMe uses mLab to store its data. It connects to mLab using `mongoose`, which provides object modeling for Node.js. I used `mongoose` to create the following models: User, Feed, PersonalCollection, Bookmark, and RecentArticle. Session data is stored in the database as well via `session` middleware and `connect-mongo`.
 
