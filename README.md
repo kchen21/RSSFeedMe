@@ -55,7 +55,7 @@ router.get('/feed/:feed_id', (req, res, next) => {
 
  Bookmarks are, in essence, articles that a user can save for later viewing. Since feeds update on a regular basis, an article can disappear from a feed once enough time has passed. To ensure that a user has permanent access to an article he/she has bookmarked, I chose to create a back-up of its data and store it.
 
- RecentArticle's purpose is to store article data from all the feeds that a user has subscribed to. I created it in order to fetch articles for the Today page, which loads articles from different feeds that a user is subscribed to. The page's `GET` route utilizes `async`'s `waterfall` method to fetch data from each feed before rendering the page itself. Note that the calls are all asynchronous. Thus, not all articles will be present at the time the Today page is rendered. However, we wouldn't want the user to wait forever, until all the articles of all the feeds in his/her collection have been fetched, would we?
+ RecentArticle's purpose is to store article data from all the feeds that a user has subscribed to. I created it in order to fetch articles for the Today page, which loads articles from different feeds that a user is subscribed to. The page's `GET` route utilizes `async`'s `waterfall` method to fetch data from each feed before rendering the page itself. Note that the calls are all asynchronous. Thus, not all articles will be present at the time the Today page is rendered. However, we wouldn't want to keep the user waiting until all the articles of all the feeds in his/her collection have been fetched, would we?
 
  ## To Be implemented
 
