@@ -39,7 +39,8 @@ router.post('/add-tag', (req, res, next) => {
 
     feed.save((err) => {
       if (err) return next(err);
-      req.flash('adminMessages', 'Successfully added a tag');
+      req.flash('adminMessages', 'Successfully added a tag to a feed');
+      return res.redirect('/add-tag');
     });
   });
 });
