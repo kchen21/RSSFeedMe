@@ -66,7 +66,7 @@ router.post('/subscribe', (req, res, next) => {
         .exec((err, collections) => {
           if (err) return next(err);
           req.app.locals.collections = collections;
-          res.redirect('/feeds');
+          res.redirect(req.get('referer'));
         });
     });
   });
@@ -275,8 +275,9 @@ router.get('/today', (req, res, next) => {
 
 router.get('/search', (req, res, next) => {
   Feed.find({ tags: req.query.tag }, (err, feeds) => {
-    res.render('/main/search', {
+    res.render('main/search', {
       profileMessages: req.flash('profileMessages'),
+      tag: req.query.tag,
       feeds: feeds
     });
   });
