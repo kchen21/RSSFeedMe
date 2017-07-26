@@ -6,7 +6,8 @@ let FeedSchema = new Schema({
   title: { type: String, required: true },
   description: String,
   link: String,
-  image_url: String
+  image_url: String,
+  tags: [String]
 });
 
 module.exports = mongoose.model('Feed', FeedSchema);
