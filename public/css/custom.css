@@ -227,10 +227,22 @@
 
 /*Feeds*/
 
+.link-to-search {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.link-to-search > a:hover {
+  text-decoration: none;
+  cursor: pointer;
+  opacity: .5;
+}
+
 .feeds {
   display: block;
-  max-height: calc(100% - 69px);
+  max-height: calc(100% - 104px);
   overflow-y: scroll;
+  margin: 0;
   padding: 0 40px;
 }
 
@@ -422,5 +434,5 @@
 }
 
 .search-results {
-  max-height: calc(100% - 181px);
+  max-height: calc(100% - 171px);
 }
