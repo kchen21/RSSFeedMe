@@ -1,0 +1,36 @@
+<% layout('homepage_layout') -%>
+
+
+<div class="col-lg-6 col-md-offset-3">
+
+  <% if (adminMessages.length > 0) { %>
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-label="close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= adminMessages %>
+    </div>
+  <% } %>
+
+  <form method="post" action="/add-tag">
+
+    <h1>Add Tag</h1>
+
+    <div class="form-group">
+      <label for="tag">Tag</label>
+      <input type="text" class="form-control" name="tag" id="tag"/>
+    </div>
+    <div class="form-group">
+      <p>To which feed should the tag be added?</p>
+      <select class="selectpicker" name="feedId">
+        <% feeds.forEach((feed) => { %>
+          <option value="<%= feed._id %>"><%= feed.title %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+
+  </form>
+
+</div>
