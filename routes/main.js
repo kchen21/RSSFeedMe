@@ -273,4 +273,17 @@ router.get('/today', (req, res, next) => {
   });
 });
 
+router.get('/search', (req, res, next) => {
+  Feed.find({ tags: req.query.tag }, (err, feeds) => {
+    res.render('/main/search', {
+      profileMessages: req.flash('profileMessages'),
+      feeds: feeds
+    });
+  });
+});
+
+router.post('/search', (req, res, next) => {
+  res.redirect('/search?tag=' + req.body.tag);
+});
+
 module.exports = router;
