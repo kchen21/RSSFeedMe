@@ -23,4 +23,25 @@ router.post('/add-feed-support', (req, res, next) => {
   });
 });
 
+router.get('/add-tag', (req, res, next) => {
+  Feed.find({}, (err, feeds) => {
+    res.render('admin/add-tag', {
+      profileMessages: req.flash('profileMessages'),
+      adminMessages: req.flash('adminMessages'),
+      feeds: feeds
+    });
+  });
+});
+
+router.post('/add-tag', (req, res, next) => {
+  Feed.findOne({ _id: req.body.feedId }, (err, feed) => {
+    feed.tags.addToSet(req.body.tag);
+
+    feed.save((err) => {
+      if (err) return next(err);
+      req.flash('adminMessages', 'Successfully added a tag');
+    });
+  });
+});
+
 module.exports = router;
