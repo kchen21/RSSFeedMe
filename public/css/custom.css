@@ -110,6 +110,8 @@
 
 .sidebar-main {
   padding: 20px;
+  max-height: calc(100vh - 101px);
+  overflow-y: scroll;
 }
 
 .sidebar-main > a {
@@ -227,7 +229,7 @@
 
 .feeds {
   display: block;
-  height: calc(100% - 69px);
+  max-height: calc(100% - 69px);
   overflow-y: scroll;
   padding: 0 40px;
 }
@@ -420,5 +422,5 @@
 }
 
 .search-results {
-  height: calc(100% - 145px);
+  max-height: calc(100% - 181px);
 }
