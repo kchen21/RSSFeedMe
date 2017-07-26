@@ -57,11 +57,11 @@ router.get('/feed/:feed_id', (req, res, next) => {
 
  RecentArticle's purpose is to store article data from all the feeds that a user has subscribed to. I created it in order to fetch articles for the Today page, which loads articles from different feeds that a user is subscribed to. The page's `GET` route leverages `async#waterfall` in order to make sequential `GET` requests to the Yahoo! Feed API to fetch data from each feed before rendering the page itself. The calls to save article data are still all asynchronous, however. Thus, not all articles will be present at the time the Today page is rendered. However, the alternative, which is to keep the user waiting until all the articles of all the feeds in his/her collection are available for fetching, can lead to long page load times, which make for a poor user experience.
 
+## Feed Search
+
+Users can search for feeds via a tag string, e.g. 'sports', 'games', or 'food'. To implement this, I added an array, `tags`, to the `Feed` Schema, and used MongoDB queries to match a user's search string to the strings within it. For now, tags must be added to a feed via administrator routes. Thus, a user will not be able to add his/her own tag to a feed.
+
  ## To Be Implemented
-
- ### Feed Search
-
- Users will be able to search for feeds. To implement this, I will be adding tags to feeds, and using MongoDB queries to match a user's search terms to tags.
 
  ### User Avatars
 
