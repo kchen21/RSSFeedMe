@@ -7,7 +7,7 @@ let engine = require('ejs-mate');
 let session = require('express-session');
 let cookieParser = require('cookie-parser');
 let flash = require('express-flash');
-let MongoStore = require('connect-mongo')(session);
+let MongoStore = require('connect-mongo').default;
 let passport = require('passport');
 
 let User = require('./models/user');
@@ -22,13 +22,9 @@ let adminRoutes = require('./routes/admin');
 
 let app = express();
 
-mongoose.connect(secret.database, (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Connected to the database");
-  }
-});
+mongoose.connect(secret.database)
+  .then(() => console.log("Connected to the database successfully!"))
+  .catch((err) => console.error("Database connection error:", err));
 
 app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev'));
@@ -39,7 +35,10 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   secret: secret.secretKey,
-  store: new MongoStore({ url: secret.database, autoReconnect: true })
+  store: MongoStore.create({ 
+    mongoUrl: secret.database,
+    dbName: 'rssfeedme'
+  })
 }));
 app.use(flash());
 app.use(passport.initialize());
