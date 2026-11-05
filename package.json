@@ -23,7 +23,7 @@
   "homepage": "https://github.com/kchen21/RSSFeedMe#readme",
   "dependencies": {
     "async": "^2.5.0",
-    "bcrypt-nodejs": "0.0.3",
+    "bcryptjs": "^3.0.3",
     "body-parser": "^1.17.2",
     "connect-mongo": "^6.0.0",
     "cookie-parser": "^1.4.3",
@@ -37,6 +37,7 @@
     "morgan": "^1.8.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "rss-parser": "^3.13.0"
   }
 }

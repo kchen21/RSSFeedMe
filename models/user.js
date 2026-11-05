@@ -1,7 +1,6 @@
-let mongoose = require('mongoose');
-let bcrypt = require('bcrypt-nodejs');
-
-let Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const bcrypt = require('bcryptjs');
 
 let UserSchema =  new Schema({
   name: { type: String, required: true },
@@ -11,18 +10,13 @@ let UserSchema =  new Schema({
   avatar_url: {type: String, default: '' }
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', async function() {
   let user = this;
 
-  if (!user.isModified('password_digest')) return next();
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) return next(err);
-    bcrypt.hash(user.password_digest, salt, null, (err, hash) => {
-      if (err) return next(err);
-      user.password_digest = hash;
-      next();
-    });
-  });
+  if (!user.isModified('password_digest')) return;
+
+  const salt = await bcrypt.genSalt(10);
+  user.password_digest = await bcrypt.hash(user.password_digest, salt);
 });
 
 UserSchema.methods.comparePassword = function(password) {

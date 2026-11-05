@@ -6,6 +6,8 @@ let PersonalCollection = require('../models/personal_collection');
 let Feed = require('../models/feed');
 let RecentArticle = require('../models/recent_article');
 let Bookmark = require('../models/bookmark');
+const Parser = require('rss-parser');
+const parser = new Parser();
 
 router.get('/', (req, res) => {
   if (req.user) {
@@ -190,89 +192,81 @@ router.post('/delete-bookmark', (req, res, next) => {
   });
 });
 
-router.get('/today', (req, res, next) => {
-  RecentArticle.remove({ user: req.user._id }, (err, removedArticles) => {
-    if (err) return next(err);
+router.get('/today', async (req, res, next) => {
+  if (!req.user) return res.redirect('/welcome');
 
-    const functions = [];
+  try {
+    // 1. Clear out previous recent articles
+    await RecentArticle.deleteMany({ user: req.user._id });
 
-    PersonalCollection
-      .find({ user: req.user._id })
+    // 2. Fetch user collections and populate feeds
+    const collections = await PersonalCollection.find({ user: req.user._id })
       .populate({
         path: 'feeds',
         model: 'Feed'
-      })
-      .exec((err, collections) => {
-        if (err) return next(err);
-
-        collections.forEach((collection) => {
-          collection.feeds.forEach((feed) => {
-            let options = {
-              url: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%3D%22" + encodeURIComponent(feed.xml_url) + "%22&format=json&diagnostics=true&callback=",
-              method: 'GET'
-            };
-
-            let requestFunction = (callback) => {
-              request(options, (err, res, body) => {
-                let articles = JSON.parse(body).query.results.item;
-
-                articles.forEach((article) => {
-
-                  let recentArticle = new RecentArticle();
-                  recentArticle.link = typeof article.link === "string" ? article.link : article.link[0];
-
-                  if (article.content) {
-                    recentArticle.image_url = article.content.url || article.content[0].url;
-                  } else {
-                    recentArticle.image_url = "/images/article_icon.jpg";
-                  }
-
-                  recentArticle.title = article.title;
-
-                  if (article.creator) {
-                    recentArticle.creator = article.creator;
-                  }
-
-                  recentArticle.pub_date = article.pubDate;
-
-                  if (article.description === null) {
-                    recentArticle.description = "Click to learn more!";
-                  } else if (typeof article.description === "string") {
-                    recentArticle.description = article.description;
-                  } else {
-                    recentArticle.description = article.description[1];
-                  }
-
-                  recentArticle.feed = feed._id;
-                  recentArticle.user = req.user._id;
-
-                  recentArticle.save((err) => {
-                    if (err) return next(err);
-                  });
-                });
-
-                callback(err);
-              });
-            };
-
-            functions.push(requestFunction);
-          });
-        });
-
-        let renderTodayPage = () => {
-          RecentArticle.find({ user: req.user._id }, (err, articles) => {
-            res.render('main/today', {
-              profileMessages: req.flash('profileMessages'),
-              articles: articles
-            });
-          });
-        };
-
-        functions.push(renderTodayPage);
-
-        async.waterfall(functions);
       });
-  });
+
+    // 3. Collect unique feeds
+    const feedsToFetch = [];
+    collections.forEach(collection => {
+      if (collection.feeds && collection.feeds.length > 0) {
+        collection.feeds.forEach(feed => {
+          if (!feedsToFetch.some(f => f._id.toString() === feed._id.toString())) {
+            feedsToFetch.push(feed);
+          }
+        });
+      }
+    });
+
+    // 4. Download and process feed articles
+    for (const feed of feedsToFetch) {
+      try {
+        const parsedFeed = await parser.parseURL(feed.xml_url);
+        
+        if (parsedFeed.items && parsedFeed.items.length > 0) {
+          for (const item of parsedFeed.items) {
+            let recentArticle = new RecentArticle();
+            
+            recentArticle.link = Array.isArray(item.link) ? item.link[0] : item.link;
+            
+            if (item.enclosure && item.enclosure.url) {
+              recentArticle.image_url = item.enclosure.url;
+            } else {
+              recentArticle.image_url = "/images/article_icon.jpg";
+            }
+
+            recentArticle.title = item.title || "Untitled Article";
+            recentArticle.creator = item.creator || item.author || "Unknown";
+            recentArticle.pub_date = item.pubDate || item.isoDate;
+
+            if (!item.contentSnippet && !item.content) {
+              recentArticle.description = "Click to learn more!";
+            } else {
+              recentArticle.description = item.contentSnippet || item.content;
+            }
+
+            recentArticle.feed = feed._id;
+            recentArticle.user = req.user._id;
+
+            await recentArticle.save();
+          }
+        }
+      } catch (feedError) {
+        console.error(`Failed to parse feed ${feed.xml_url}:`, feedError.message);
+      }
+    }
+
+    // 5. Gather newly populated articles to render the page
+    const articles = await RecentArticle.find({ user: req.user._id });
+
+    return res.render('main/today', {
+      profileMessages: req.flash('profileMessages'),
+      articles: articles
+    });
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.get('/search', (req, res, next) => {

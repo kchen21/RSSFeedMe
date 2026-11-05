@@ -43,29 +43,29 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   if (req.user) {
     res.locals.user = req.user;
 
-    PersonalCollection
-      .find({ user: req.user._id })
-      .populate({
-        path: 'feeds',
-        model: 'Feed'
-      })
-      .exec((err, collections) => {
-        if (err) return next(err);
-        req.app.locals.collections = collections;
-      });
+    try {
+      const collections = await PersonalCollection.find({ user: req.user._id })
+        .populate({
+          path: 'feeds',
+          model: 'Feed'
+        });
+      
+      req.app.locals.collections = collections;
 
-    Bookmark.find({ user: req.user._id }, (err, bookmarks) => {
-      if (err) return next(err);
+      const bookmarks = await Bookmark.find({ user: req.user._id });
 
       req.app.locals.bookmarkTitles = [];
       bookmarks.forEach((bookmark) => {
         req.app.locals.bookmarkTitles.push(bookmark.title);
       });
-    });
+
+    } catch (err) {
+      return next(err);
+    }
   }
 
   next();

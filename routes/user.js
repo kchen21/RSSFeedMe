@@ -43,34 +43,34 @@ router.post('/signup', async (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-  passport.authenticate('local-login', (err, user, info) => {
+  passport.authenticate('local-login', async (err, user, info) => {
     if (err) return next(err);
     if (!user) return res.redirect('/welcome');
 
-    PersonalCollection
-      .find({ user: user._id })
-      .populate({
-        path: 'feeds',
-        model: 'Feed'
-      })
-      .exec((err, collections) => {
-        if (err) return next(err);
-        req.app.locals.collections = collections;
-      });
+    try {
+      const collections = await PersonalCollection.find({ user: user._id })
+        .populate({
+          path: 'feeds',
+          model: 'Feed'
+        });
+      
+      req.app.locals.collections = collections;
 
-    Bookmark.find({ user: user._id }, (err, bookmarks) => {
-      if (err) return next(err);
+      const bookmarks = await Bookmark.find({ user: user._id });
 
       req.app.locals.bookmarkTitles = [];
       bookmarks.forEach((bookmark) => {
         req.app.locals.bookmarkTitles.push(bookmark.title);
       });
-    });
 
-    req.logIn(user, (err) => {
-      if (err) return next(err);
-      return res.redirect('/');
-    });
+      req.logIn(user, (loginErr) => {
+        if (loginErr) return next(loginErr);
+        return res.redirect('/');
+      });
+
+    } catch (dbErr) {
+      return next(dbErr);
+    }
   })(req, res, next);
 });
 
