@@ -105,13 +105,25 @@ router.get('/feed/:feed_id', async (req, res, next) => {
     let articles = [];
     try {
       const parsedFeed = await parser.parseURL(feed.xml_url);
-      articles = parsedFeed.items || [];
+      
+      // Map properties to match database model schema definitions
+      articles = (parsedFeed.items || []).map(item => {
+        return {
+          title: item.title || "Untitled Article",
+          link: item.link,
+          pub_date: item.pubDate || item.isoDate,
+          creator: item.creator || item.author || "Unknown",          
+          description: item.contentSnippet || item.content || "Click to learn more!",
+          image_url: (item.enclosure && item.enclosure.url) ? item.enclosure.url : "/images/article_icon.jpg"
+        };
+      });
+
     } catch (feedError) {
       console.error(`Failed to parse feed ${feed.xml_url}:`, feedError.message);
       req.flash('profileMessages', 'Could not fetch latest articles for this feed.');
     }
 
-    // Render out your feed view template with the live articles
+    // Render out feed view template with the newly normalized live articles
     return res.render('main/feed', {
       profileMessages: req.flash('profileMessages'),
       feed: feed,

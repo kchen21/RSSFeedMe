@@ -28,12 +28,10 @@
               <% } %>
             </div>
             <div class="article-description">
-              <% if (article.description === null) { %>
+              <% if (!article.description) { %>
                 <p>Click to learn more!</p>
-              <% } else if (typeof article.description === "string") { %>
-                <p><%- article.description %></p>
               <% } else { %>
-                <p><%- article.description[1] %></p>
+                <p><%- article.description || article.contentSnippet || article.content %></p>
               <% } %>
             </div>
           </div>
@@ -67,13 +65,7 @@
             <input type="hidden" name="pub_date" value="<%= article.pubDate %>"/>
           <% } %>
 
-          <% if (article.description === null) { %>
-            <input type="hidden" name="description" value="Click to learn more!"/>
-          <% } else if (typeof article.description === "string") { %>
-            <input type="hidden" name="description" value="<%= article.description %>"/>
-          <% } else { %>
-            <input type="hidden" name="description" value="<%= article.description[1] %>"/>
-          <% } %>
+          <input type="hidden" name="description" value="<%= article.description || article.contentSnippet || article.content || 'Click to learn more!' %>"/>
 
           <input class="bookmark-btn" type="image" name="submit" src="/images/add_bookmark_icon.png" border="0" alt="Submit" />
         </form>
