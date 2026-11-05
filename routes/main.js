@@ -335,6 +335,7 @@ router.get('/today', async (req, res, next) => {
         if (parsedFeed.items && parsedFeed.items.length > 0) {
           for (const item of parsedFeed.items) {
             let recentArticle = new RecentArticle();
+            let imageUrl = "/images/article_icon.jpg"; // Default fallback image
             
             recentArticle.link = Array.isArray(item.link) ? item.link[0] : item.link;
             
@@ -353,6 +354,13 @@ router.get('/today', async (req, res, next) => {
             } else {
               recentArticle.description = item.contentSnippet || item.content;
             }
+
+            if (item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) {
+              imageUrl = item.mediaThumbnail.$.url; // Safely extracts the BBC image URL
+            } else if (item.enclosure && item.enclosure.url) {
+              imageUrl = item.enclosure.url; // Keeps compatibility with standard feeds like NYT
+            }
+            recentArticle.image_url = imageUrl;
 
             recentArticle.feed = feed._id;
             recentArticle.user = req.user._id;
