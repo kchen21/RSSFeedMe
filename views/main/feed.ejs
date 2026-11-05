@@ -11,8 +11,8 @@
         <% } else { %>
           <a href="<%= article.link[0] %>">
         <% } %>
-          <% if (article.content) { %>
-            <img src="<%= article.content.url || article.content[0].url %>"/>
+          <% if (article.image_url) { %>
+            <img src="<%= article.image_url %>"/>
           <% } else { %>
             <img src="/images/article_icon.jpg"/>
           <% } %>

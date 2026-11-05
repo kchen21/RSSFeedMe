@@ -7,7 +7,13 @@ let Feed = require('../models/feed');
 let RecentArticle = require('../models/recent_article');
 let Bookmark = require('../models/bookmark');
 const Parser = require('rss-parser');
-const parser = new Parser();
+const parser = new Parser({
+  customFields: {
+    item: [
+      ['media:thumbnail', 'mediaThumbnail'] // Maps <media:thumbnail> XML elements to .mediaThumbnail properties
+    ]
+  }
+});
 
 router.get('/', (req, res) => {
   if (req.user) {
@@ -108,13 +114,21 @@ router.get('/feed/:feed_id', async (req, res, next) => {
       
       // Map properties to match database model schema definitions
       articles = (parsedFeed.items || []).map(item => {
+        let imageUrl = "/images/article_icon.jpg"; // Default fallback image
+
+        if (item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) {
+          imageUrl = item.mediaThumbnail.$.url; // Safely extracts the BBC image URL
+        } else if (item.enclosure && item.enclosure.url) {
+          imageUrl = item.enclosure.url; // Keeps compatibility with standard feeds like NYT
+        }
+
         return {
           title: item.title || "Untitled Article",
           link: item.link,
           pub_date: item.pubDate || item.isoDate,
-          creator: item.creator || item.author || "Unknown",          
+          creator: item.creator || item.author || "Unknown Author",          
           description: item.contentSnippet || item.content || "Click to learn more!",
-          image_url: (item.enclosure && item.enclosure.url) ? item.enclosure.url : "/images/article_icon.jpg"
+          image_url: imageUrl
         };
       });
 
