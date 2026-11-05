@@ -17,13 +17,18 @@ router.get('/', (req, res) => {
   }
 });
 
-router.get('/feeds', (req, res, next) => {
-  Feed.find({}, (err, feeds) => {
-    res.render('main/feeds', {
+router.get('/feeds', async (req, res, next) => {
+  try {
+    const feeds = await Feed.find({});
+
+    return res.render('main/feeds', {
       profileMessages: req.flash('profileMessages'),
       feeds: feeds
     });
-  });
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.post('/collection', async (req, res, next) => {
@@ -115,16 +120,29 @@ router.post('/remove-feed-from-collection', (req, res, next) => {
   });
 });
 
-router.get('/collection/:collection_id', (req, res, next) => {
-  PersonalCollection.findOne({ $and: [{ _id: req.params.collection_id }, { user: req.user._id }] }, (err, collection) =>{
-    RecentArticle.find({ feed : { $in : collection.feeds } }, (err, articles) => {
-      res.render('main/collection', {
-        profileMessages: req.flash('profileMessages'),
-        collection: collection,
-        articles: articles
-      });
+router.get('/collection/:collection_id', async (req, res, next) => {
+  if (!req.user) return res.redirect('/welcome');
+
+  try {
+    const collection = await PersonalCollection.findOne({ 
+      $and: [{ _id: req.params.collection_id }, { user: req.user._id }] 
     });
-  });
+
+    if (!collection) {
+      return res.status(404).render('error', { message: 'Collection not found' });
+    }
+
+    const articles = await RecentArticle.find({ feed: { $in: collection.feeds } });
+
+    return res.render('main/collection', {
+      profileMessages: req.flash('profileMessages'),
+      collection: collection,
+      articles: articles
+    });
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.post('/delete-collection', (req, res, next) => {
@@ -269,14 +287,19 @@ router.get('/today', async (req, res, next) => {
   }
 });
 
-router.get('/search', (req, res, next) => {
-  Feed.find({ tags: req.query.tag }, (err, feeds) => {
-    res.render('main/search', {
+router.get('/search', async (req, res, next) => {
+  try {
+    const feeds = await Feed.find({ tags: req.query.tag });
+
+    return res.render('main/search', {
       profileMessages: req.flash('profileMessages'),
       tag: req.query.tag,
       feeds: feeds
     });
-  });
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.post('/search', (req, res, next) => {
