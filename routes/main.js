@@ -135,26 +135,40 @@ router.get('/feed/:feed_id', async (req, res, next) => {
   }
 });
 
-router.post('/remove-feed-from-collection', (req, res, next) => {
-  PersonalCollection.findOne({ $and: [{ _id: req.body.collectionId }, { user: req.user._id }] }, (err, collection) => {
+router.post('/remove-feed-from-collection', async (req, res, next) => {
+  if (!req.user) return res.redirect('/welcome');
+
+  try {
+    // Await finding the user's specific collection
+    const collection = await PersonalCollection.findOne({ 
+      $and: [{ _id: req.body.collectionId }, { user: req.user._id }] 
+    });
+
+    // Guard against edge cases where the collection might be wrong or deleted
+    if (!collection) {
+      return res.status(404).send('Collection not found');
+    }
+
+    // Pull the specific feed ID out of the schema array field
     collection.feeds.pull(req.body.feedId);
 
-    collection.save((err) => {
-      if (err) return next(err);
+    // Await saving the updated collection document
+    await collection.save();
 
-      PersonalCollection
-        .find({ user: req.user._id })
-        .populate({
-          path: 'feeds',
-          model: 'Feed'
-        })
-        .exec((err, collections) => {
-          if (err) return next(err);
-          req.app.locals.collections = collections;
-          res.redirect(req.get('referer'));
-        });
-    });
-  });
+    // Await fetching and populating the updated collections global list
+    const collections = await PersonalCollection.find({ user: req.user._id })
+      .populate({
+        path: 'feeds',
+        model: 'Feed'
+      }); // Notice ".exec()" is no longer needed when using await
+
+    // Refresh app-wide data and redirect the browser back to where it came from
+    req.app.locals.collections = collections;
+    return res.redirect(req.get('referer'));
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.get('/collection/:collection_id', async (req, res, next) => {
@@ -182,22 +196,29 @@ router.get('/collection/:collection_id', async (req, res, next) => {
   }
 });
 
-router.post('/delete-collection', (req, res, next) => {
-  PersonalCollection.remove({ $and: [{ _id: req.body.collectionId }, { user: req.user._id }] }, (err, collection) => {
-    if (err) return next(err);
+router.post('/delete-collection', async (req, res, next) => {
+  if (!req.user) return res.redirect('/welcome');
 
-    PersonalCollection
-      .find({ user: req.user._id })
+  try {
+    // Use deleteOne to remove the single matching document
+    await PersonalCollection.deleteOne({ 
+      $and: [{ _id: req.body.collectionId }, { user: req.user._id }] 
+    });
+
+    // Await fetching and populating the updated collections global list
+    const collections = await PersonalCollection.find({ user: req.user._id })
       .populate({
         path: 'feeds',
         model: 'Feed'
-      })
-      .exec((err, collections) => {
-        if (err) return next(err);
-        req.app.locals.collections = collections;
-        res.redirect('/');
-      });
-  });
+      }); // Notice ".exec()" is no longer needed when using await
+
+    // Refresh app-wide data and redirect cleanly to the homepage
+    req.app.locals.collections = collections;
+    return res.redirect('/');
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.post('/bookmark', async (req, res, next) => {
