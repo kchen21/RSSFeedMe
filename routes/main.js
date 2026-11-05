@@ -123,7 +123,7 @@ router.get('/feed/:feed_id', async (req, res, next) => {
       req.flash('profileMessages', 'Could not fetch latest articles for this feed.');
     }
 
-    // Render out feed view template with the newly normalized live articles
+    // Render out the feed view template with the newly normalized live articles
     return res.render('main/feed', {
       profileMessages: req.flash('profileMessages'),
       feed: feed,
@@ -224,27 +224,46 @@ router.post('/bookmark', async (req, res, next) => {
   }
 });
 
-router.get('/bookmarks', (req, res, next) => {
-  Bookmark.find({}, (err, bookmarks) => {
-    res.render('main/bookmarks', {
+router.get('/bookmarks', async (req, res, next) => {
+  try {
+    // Await finding all bookmark documents
+    const bookmarks = await Bookmark.find({});
+
+    // Render out the bookmarks view template
+    return res.render('main/bookmarks', {
       profileMessages: req.flash('profileMessages'),
       bookmarks: bookmarks
     });
-  });
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
-router.post('/delete-bookmark', (req, res, next) => {
-  Bookmark.remove({ $and: [{ _id: req.body.bookmarkId }, { user: req.user._id }] }, (err, bookmark) => {
-    if (err) return next(err);
+router.post('/delete-bookmark', async (req, res, next) => {
+  if (!req.user) return res.redirect('/welcome');
 
-    let bookmarkTitleIndex = req.app.locals.bookmarkTitles.indexOf(bookmark.title);
+  try {
+    // Use findOneAndDelete to find, delete, and return the document in one atomic operation
+    const deletedBookmark = await Bookmark.findOneAndDelete({ 
+      $and: [{ _id: req.body.bookmarkId }, { user: req.user._id }] 
+    });
 
-    if (bookmarkTitleIndex > -1) {
-      req.app.locals.bookmarkTitles.splice(bookmarkTitleIndex, 1);
+    // Only attempt to manipulate strings if a matching bookmark was actually found and deleted
+    if (deletedBookmark && deletedBookmark.title) {
+      let bookmarkTitleIndex = req.app.locals.bookmarkTitles.indexOf(deletedBookmark.title);
+
+      if (bookmarkTitleIndex > -1) {
+        req.app.locals.bookmarkTitles.splice(bookmarkTitleIndex, 1);
+      }
     }
 
-    res.redirect('/bookmarks');
-  });
+    // Redirect cleanly back to the overview panel
+    return res.redirect('/bookmarks');
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.get('/today', async (req, res, next) => {
