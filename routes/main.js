@@ -24,30 +24,29 @@ router.get('/feeds', (req, res, next) => {
   });
 });
 
-router.post('/collection', (req, res, next) => {
-  User.findOne({ _id: req.user._id }, (err, foundUser) => {
-    if (err) return next(err);
+router.post('/collection', async (req, res, next) => {
+  try {
+    const foundUser = await User.findOne({ _id: req.user._id });
+    if (!foundUser) return res.status(404).send('User not found');
 
     let collection = new PersonalCollection();
     collection.title = req.body.title;
     collection.user = foundUser._id;
 
-    collection.save((err) => {
-      if (err) return next(err);
+    await collection.save();
 
-      PersonalCollection
-        .find({ user: req.user._id })
-        .populate({
-          path: 'feeds',
-          model: 'Feed'
-        })
-        .exec((err, collections) => {
-          if (err) return next(err);
-          req.app.locals.collections = collections;
-          res.redirect(req.get('referer'));
-        });
-    });
-  });
+    const collections = await PersonalCollection.find({ user: req.user._id })
+      .populate({
+        path: 'feeds',
+        model: 'Feed'
+      });
+
+    req.app.locals.collections = collections;
+    res.redirect(req.get('referer'));
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.post('/subscribe', (req, res, next) => {
@@ -144,9 +143,10 @@ router.post('/delete-collection', (req, res, next) => {
   });
 });
 
-router.post('/bookmark', (req, res, next) => {
-  User.findOne({ _id: req.user._id }, (err, foundUser) => {
-    if (err) return next(err);
+router.post('/bookmark', async (req, res, next) => {
+  try {
+    const foundUser = await User.findOne({ _id: req.user._id });
+    if (!foundUser) return res.status(404).send('User not found');
 
     let bookmark = new Bookmark();
     bookmark.link = req.body.link;
@@ -157,12 +157,14 @@ router.post('/bookmark', (req, res, next) => {
     bookmark.description = req.body.description;
     bookmark.user = foundUser._id;
 
-    bookmark.save((err) => {
-      if (err) return next(err);
-      req.app.locals.bookmarkTitles.push(bookmark.title);
-      res.redirect(req.get('referer'));
-    });
-  });
+    await bookmark.save();
+
+    req.app.locals.bookmarkTitles.push(bookmark.title);
+    res.redirect(req.get('referer'));
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.get('/bookmarks', (req, res, next) => {

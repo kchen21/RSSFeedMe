@@ -12,15 +12,18 @@ router.get('/welcome', (req, res, next) => {
   });
 });
 
-router.post('/signup', (req, res, next) => {
-  let user = new User();
+router.post('/signup', async (req, res, next) => {
+  try {
+    let user = new User();
 
-  user.name = req.body.name;
-  user.email = req.body.email;
-  user.username = req.body.username;
-  user.password_digest = req.body.password;
+    user.name = req.body.name;
+    user.email = req.body.email;
+    user.username = req.body.username;
+    user.password_digest = req.body.password;
 
-  User.findOne({ $or: [{ email: req.body.email }, { username: req.body.username }] }, (err, existingUser) => {
+    const existingUser = await User.findOne({ 
+      $or: [{ email: req.body.email }, { username: req.body.username }] 
+    });
 
     if (existingUser) {
       if (existingUser.email === req.body.email) {
@@ -29,14 +32,14 @@ router.post('/signup', (req, res, next) => {
         req.flash('signupErrors', "Username is already taken");
       }
       return res.redirect('/welcome');
-    } else {
-      user.save((err, user) => {
-        if (err) return next(err);
-        return res.redirect('/');
-      });
     }
 
-  });
+    await user.save();
+    return res.redirect('/');
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.post('/login', (req, res, next) => {
@@ -71,19 +74,22 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/edit-profile', (req, res, next) => {
-  User.findOne({ _id: req.user._id }, (err, foundUser) => {
-    if (err) return next(err);
+router.post('/edit-profile', async (req, res, next) => {
+  try {
+    const foundUser = await User.findOne({ _id: req.user._id });
+    if (!foundUser) return res.status(404).send('User not found');
 
     if (req.body.name) foundUser.name = req.body.name;
     if (req.body.email) foundUser.email = req.body.email;
 
-    foundUser.save((err) => {
-      if (err) return next(err);
-      req.flash('profileMessages', 'Successfully updated profile');
-      return res.redirect('/');
-    });
-  });
+    await foundUser.save();
+    
+    req.flash('profileMessages', 'Successfully updated profile');
+    return res.redirect('/');
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.get('/logout', (req, res) => {

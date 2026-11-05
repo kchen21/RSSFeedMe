@@ -17,19 +17,21 @@ passport.use('local-login', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, (req, username, password, done) => {
-  User.findOne({ username: username }, (err, user) => {
-    if (err) return done(err);
+  User.findOne({ username: username })
+    .then(user => {
+      if (!user) {
+        return done(null, false, req.flash('loginMessages', 'No user has been found'));
+      }
 
-    if (!user) {
-      return done(null, false, req.flash('loginMessages', 'No user has been found'));
-    }
+      if (!user.comparePassword(password)) {
+        return done(null, false, req.flash('loginMessages', 'Password is incorrect'));
+      }
 
-    if (!user.comparePassword(password)) {
-      return done(null, false, req.flash('loginMessages', 'Password is incorrect'));
-    }
-
-    return done(null, user);
-  });
+      return done(null, user);
+    })
+    .catch(err => {
+      return done(err);
+    });
 }));
 
 exports.isAuthenticated = (req, res, next) => {
