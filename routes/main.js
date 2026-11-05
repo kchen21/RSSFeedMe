@@ -56,46 +56,71 @@ router.post('/collection', async (req, res, next) => {
   }
 });
 
-router.post('/subscribe', (req, res, next) => {
-  PersonalCollection.findOne({ $and: [{ _id: req.body.collectionId }, { user: req.user._id }] }, (err, collection) => {
+router.post('/subscribe', async (req, res, next) => {
+  if (!req.user) return res.redirect('/welcome');
+
+  try {
+    // Await finding the user's specific collection
+    const collection = await PersonalCollection.findOne({ 
+      $and: [{ _id: req.body.collectionId }, { user: req.user._id }] 
+    });
+
+    // Guard against edge cases where the collection string might be wrong/deleted
+    if (!collection) {
+      return res.status(404).send('Collection not found');
+    }
+
+    // Add the unique feed ID to the schema array set
     collection.feeds.addToSet(req.body.feedId);
 
-    collection.save((err) => {
-      if (err) return next(err);
+    // Await saving the updated collection document
+    await collection.save();
 
-      PersonalCollection
-        .find({ user: req.user._id })
-        .populate({
-          path: 'feeds',
-          model: 'Feed'
-        })
-        .exec((err, collections) => {
-          if (err) return next(err);
-          req.app.locals.collections = collections;
-          res.redirect(req.get('referer'));
-        });
-    });
-  });
+    // Await fetching and populating the updated collections global list
+    const collections = await PersonalCollection.find({ user: req.user._id })
+      .populate({
+        path: 'feeds',
+        model: 'Feed'
+      });
+
+    // Refresh app wide data and redirect the browser back to where it came from
+    req.app.locals.collections = collections;
+    return res.redirect(req.get('referer'));
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
-router.get('/feed/:feed_id', (req, res, next) => {
-  Feed.findOne({ _id: req.params.feed_id }, (err, feed) => {
-    if (err) return next(err);
+router.get('/feed/:feed_id', async (req, res, next) => {
+  try {
+    // Await finding the specific feed by ID
+    const feed = await Feed.findOne({ _id: req.params.feed_id });
+    
+    if (!feed) {
+      return res.status(404).render('error', { message: 'Feed not found' });
+    }
 
-    let options = {
-      url: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%3D%22" + encodeURIComponent(feed.xml_url) + "%22&format=json&diagnostics=true&callback=",
-      method: 'GET'
-    };
+    // Use the rss-parser instance to fetch and parse the feed directly from its source URL
+    let articles = [];
+    try {
+      const parsedFeed = await parser.parseURL(feed.xml_url);
+      articles = parsedFeed.items || [];
+    } catch (feedError) {
+      console.error(`Failed to parse feed ${feed.xml_url}:`, feedError.message);
+      req.flash('profileMessages', 'Could not fetch latest articles for this feed.');
+    }
 
-    request(options, (err, res2, body) => {
-      let json = JSON.parse(body);
-      res.render('main/feed', {
-        profileMessages: req.flash('profileMessages'),
-        feed: feed,
-        articles: json.query.results.item
-      });
+    // Render out your feed view template with the live articles
+    return res.render('main/feed', {
+      profileMessages: req.flash('profileMessages'),
+      feed: feed,
+      articles: articles
     });
-  });
+
+  } catch (err) {
+    return next(err);
+  }
 });
 
 router.post('/remove-feed-from-collection', (req, res, next) => {
