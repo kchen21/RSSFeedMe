@@ -23,8 +23,8 @@
                 <span class="article-creator"><%- article.creator %></span>
               <% } %>
 
-              <% if (article.pubDate) { %>
-                <span class="article-pub-date"><%= article.pubDate %></span>
+              <% if (article.pub_date) { %>
+                <span class="article-pub-date"><%= article.pub_date %></span>
               <% } %>
             </div>
             <div class="article-description">
@@ -49,8 +49,8 @@
             <input type="hidden" name="link" value="<%= article.link[0] %>"/>
           <% } %>
 
-          <% if (article.content) { %>
-            <input type="hidden" name="image_url" value="<%= article.content.url || article.content[0].url %>"/>
+          <% if (article.image_url) { %>
+            <input type="hidden" name="image_url" value="<%= article.image_url %>"/>
           <% } else { %>
             <input type="hidden" name="image_url" value="/images/article_icon.jpg"/>
           <% } %>
@@ -61,8 +61,8 @@
             <input type="hidden" name="creator" value="<%= article.creator %>"/>
           <% } %>
 
-          <% if (article.pubDate) { %>
-            <input type="hidden" name="pub_date" value="<%= article.pubDate %>"/>
+          <% if (article.pub_date) { %>
+            <input type="hidden" name="pub_date" value="<%= article.pub_date %>"/>
           <% } %>
 
           <input type="hidden" name="description" value="<%= article.description || article.contentSnippet || article.content || 'Click to learn more!' %>"/>
