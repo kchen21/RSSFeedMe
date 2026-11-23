@@ -26,7 +26,7 @@ The administrator (me) can add feeds to RSSFeedMe for users to subscribe to. Eac
 
 Before subscribing to a feed, a user must create at least one collection, which will be stored as a `PersonalCollection` document. Users can create several collections and add feeds to each of them via the Feeds page, which loads when a user clicks 'Add Feed'. In fact, a user can add a feed to multiple collections.
 
-When a user subscribes to a feed, RSSFeedMe adds its title to the sidebar. Clicking on the title will render the Feed page, which will load that feed's articles. RSSFeedMe fetches article data in real time using Node.js package rss-parser.
+When a user subscribes to a feed, RSSFeedMe adds its title to the sidebar. Clicking on the title will render the Feed page, which will load that feed's articles. RSSFeedMe fetches article data in real time using `rss-parser`, which reads RSS XML feeds and converts them to JSON.
 
 ## Bookmark and RecentArticle
 
