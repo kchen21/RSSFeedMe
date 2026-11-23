@@ -1,8 +1,8 @@
 # RSSFeedMe
 
-[RSSFeedMe live][heroku]
+[RSSFeedMe live][vercel]
 
-[heroku]: https://rssfeedme.herokuapp.com
+[vercel]: https://rss-feed-me.vercel.app
 
 RSSFeedMe is a full-stack web application that gathers the latest news and information from RSS feeds that its users subscribe to. It utilizes Node.js, Express.js, EJS, MongoDB, and jQuery.
 
