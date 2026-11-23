@@ -26,28 +26,7 @@ The administrator (me) can add feeds to RSSFeedMe for users to subscribe to. Eac
 
 Before subscribing to a feed, a user must create at least one collection, which will be stored as a `PersonalCollection` document. Users can create several collections and add feeds to each of them via the Feeds page, which loads when a user clicks 'Add Feed'. In fact, a user can add a feed to multiple collections.
 
-When a user subscribes to a feed, RSSFeedMe adds its title to the sidebar. Clicking on the title will render the Feed page, which will load that feed's articles. RSSFeedMe fetches article data in real time using a Yahoo! Feed API which organizes feed data from a feed URL and returns it as JSON. Below is the route I created for feed-fetching (Note that I used `request`):
-
-```javascript
-router.get('/feed/:feed_id', (req, res, next) => {
-  Feed.findOne({ _id: req.params.feed_id }, (err, feed) => {
-    if (err) return next(err);
-
-    let options = {
-      url: "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%3D%22" + encodeURIComponent(feed.xml_url) + "%22&format=json&diagnostics=true&callback=",
-      method: 'GET'
-    };
-
-    request(options, (err, res2, body) => {
-      let json = JSON.parse(body);
-      res.render('main/feed', {
-        feed: feed,
-        articles: json.query.results.item
-      });
-    });
-  });
-});
-```
+When a user subscribes to a feed, RSSFeedMe adds its title to the sidebar. Clicking on the title will render the Feed page, which will load that feed's articles. RSSFeedMe fetches article data in real time using Node.js package rss-parser.
 
 ## Bookmark and RecentArticle
 
@@ -60,9 +39,3 @@ router.get('/feed/:feed_id', (req, res, next) => {
 ## Feed Search
 
 Users can search for feeds via a tag string, e.g. 'sports', 'games', or 'food'. To implement this, I added an array, `tags`, to the `Feed` Schema, and used MongoDB queries to match a user's search string to the strings within it. For now, tags must be added to a feed via administrator routes. Thus, a user will not be able to add his/her own tag to a feed.
-
- ## To Be Implemented
-
- ### User Avatars
-
- Users will be able to upload their own avatars. I plan to use AWS S3 to store them.
