@@ -10,6 +10,7 @@ const Parser = require('rss-parser');
 const parser = new Parser({
   customFields: {
     item: [
+      ['media:content', 'mediaContent'], // Maps <media:content> XML elements to .mediaContent properties
       ['media:thumbnail', 'mediaThumbnail'] // Maps <media:thumbnail> XML elements to .mediaThumbnail properties
     ]
   }
@@ -116,10 +117,12 @@ router.get('/feed/:feed_id', async (req, res, next) => {
       articles = (parsedFeed.items || []).map(item => {
         let imageUrl = "/images/article_icon.jpg"; // Default fallback image
 
-        if (item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) {
-          imageUrl = item.mediaThumbnail.$.url; // Safely extracts the BBC image URL
+        if(item.mediaContent && item.mediaContent.$ && item.mediaContent.$.url) {
+          imageUrl = item.mediaContent.$.url; // Safely extracts the media content URL
+        } else if (item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) {
+          imageUrl = item.mediaThumbnail.$.url; // Safely extracts the media thumbnail URL
         } else if (item.enclosure && item.enclosure.url) {
-          imageUrl = item.enclosure.url; // Keeps compatibility with standard feeds like NYT
+          imageUrl = item.enclosure.url;
         }
 
         return {
