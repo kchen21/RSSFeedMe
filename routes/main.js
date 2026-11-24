@@ -11,7 +11,8 @@ const parser = new Parser({
   customFields: {
     item: [
       ['media:content', 'mediaContent'], // Maps <media:content> XML elements to .mediaContent properties
-      ['media:thumbnail', 'mediaThumbnail'] // Maps <media:thumbnail> XML elements to .mediaThumbnail properties
+      ['media:thumbnail', 'mediaThumbnail'], // Maps <media:thumbnail> XML elements to .mediaThumbnail properties
+      ['description', 'rawDescription']  // Maps <description> XML elements to .rawDescription properties
     ]
   }
 });
@@ -121,6 +122,11 @@ router.get('/feed/:feed_id', async (req, res, next) => {
           imageUrl = item.mediaContent.$.url; // Safely extracts the media content URL
         } else if (item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) {
           imageUrl = item.mediaThumbnail.$.url; // Safely extracts the media thumbnail URL
+        } else if (item.rawDescription) {
+          const imgTagMatch = item.rawDescription.match(/<img\b[^>]*?\b(?:src|data-src)=["']([^"']+)["']/i);
+          if (imgTagMatch?.[1]) {
+            imageUrl = imgTagMatch[1].replace(/&amp;/g, '&');
+          }
         } else if (item.enclosure && item.enclosure.url) {
           imageUrl = item.enclosure.url;
         }
@@ -338,29 +344,27 @@ router.get('/today', async (req, res, next) => {
         if (parsedFeed.items && parsedFeed.items.length > 0) {
           for (const item of parsedFeed.items) {
             let recentArticle = new RecentArticle();
-            
-            recentArticle.link = Array.isArray(item.link) ? item.link[0] : item.link;
+            let imageUrl = "/images/article_icon.jpg"; // Default fallback image
             
             if (item.mediaContent && item.mediaContent.$ && item.mediaContent.$.url) {
-              recentArticle.image_url = item.mediaContent.$.url;
+              imageUrl = item.mediaContent.$.url;
             } else if (item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) {
-              recentArticle.image_url = item.mediaThumbnail.$.url;
+              imageUrl = item.mediaThumbnail.$.url;
             } else if (item.enclosure && item.enclosure.url) {
-              recentArticle.image_url = item.enclosure.url;
-            } else {
-              recentArticle.image_url = "/images/article_icon.jpg";
+              imageUrl = item.enclosure.url;
+            } else if (item.rawDescription) {
+              const imgTagMatch = item.rawDescription.match(/<img\b[^>]*?\b(?:src|data-src)=["']([^"']+)["']/i);
+              if (imgTagMatch?.[1]) {
+                imageUrl = imgTagMatch[1].replace(/&amp;/g, '&');
+              }
             }
 
+            recentArticle.link = Array.isArray(item.link) ? item.link[0] : item.link;
+            recentArticle.image_url = imageUrl;
             recentArticle.title = item.title || "Untitled Article";
             recentArticle.creator = item.creator || item.author || "Unknown";
             recentArticle.pub_date = item.pubDate || item.isoDate;
-
-            if (!item.contentSnippet && !item.content) {
-              recentArticle.description = "Click to learn more!";
-            } else {
-              recentArticle.description = item.contentSnippet || item.content;
-            }
-
+            recentArticle.description = item.contentSnippet || item.content || "Click to learn more!";
             recentArticle.feed = feed._id;
             recentArticle.user = req.user._id;
 
