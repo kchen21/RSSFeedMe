@@ -341,7 +341,9 @@ router.get('/today', async (req, res, next) => {
             
             recentArticle.link = Array.isArray(item.link) ? item.link[0] : item.link;
             
-            if (item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) {
+            if (item.mediaContent && item.mediaContent.$ && item.mediaContent.$.url) {
+              recentArticle.image_url = item.mediaContent.$.url;
+            } else if (item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) {
               recentArticle.image_url = item.mediaThumbnail.$.url;
             } else if (item.enclosure && item.enclosure.url) {
               recentArticle.image_url = item.enclosure.url;
