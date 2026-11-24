@@ -343,7 +343,7 @@ router.get('/today', async (req, res, next) => {
         
         if (parsedFeed.items && parsedFeed.items.length > 0) {
           for (const item of parsedFeed.items) {
-            if (!isArticlePublishedToday(item)) continue; // Skip articles not published today
+            if (!isWithinLast24Hours(item)) continue; // Skip articles not published in the last 24 hours
 
             let recentArticle = new RecentArticle();
             let imageUrl = "/images/article_icon.jpg"; // Default fallback image
@@ -391,22 +391,15 @@ router.get('/today', async (req, res, next) => {
   }
 });
 
-function isArticlePublishedToday(item, timeZone = 'America/New_York') {
-    const pubDate = item.pubDate || item.isoDate;
-    if (!pubDate) return false;
+function isWithinLast24Hours(item) {
+  const rawDate = item.isoDate || item.pubDate;
+  if (!rawDate) return false;
 
-    const date = new Date(pubDate);
-    if (isNaN(date.getTime())) return false;
+  const publishedTime = new Date(rawDate).getTime();
+  if (Number.isNaN(publishedTime)) return false;
 
-    // Format dates as YYYY-MM-DD
-    const dateFormatter = new Intl.DateTimeFormat('en-US', {
-      timeZone,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    });
-
-    return dateFormatter.format(date) === dateFormatter.format(new Date());
+  const twentyFourHoursAgo = Date.now() - 24 * 60 * 60 * 1000;
+  return publishedTime >= twentyFourHoursAgo;
 };
 
 router.get('/search', async (req, res, next) => {
