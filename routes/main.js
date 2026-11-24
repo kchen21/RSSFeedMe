@@ -343,6 +343,19 @@ router.get('/today', async (req, res, next) => {
         
         if (parsedFeed.items && parsedFeed.items.length > 0) {
           for (const item of parsedFeed.items) {
+            // Skip articles that don't have a publication date or are not from today
+            const pubDate = item.pubDate || item.isoDate;
+            if (!pubDate) continue; // Skip articles without a publication date
+            const date = new Date(pubDate);
+            if (isNaN(date.getTime())) continue; // Skip if the date is invalid
+            const dateFormatter = new Intl.DateTimeFormat('en-US', {
+              timeZone: 'America/New_York',
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit'
+            });
+            if (dateFormatter.format(date) !== dateFormatter.format(new Date())) continue; // Skip if not today
+
             let recentArticle = new RecentArticle();
             let imageUrl = "/images/article_icon.jpg"; // Default fallback image
             
@@ -363,7 +376,7 @@ router.get('/today', async (req, res, next) => {
             recentArticle.image_url = imageUrl;
             recentArticle.title = item.title || "Untitled Article";
             recentArticle.creator = item.creator || item.author || "Unknown";
-            recentArticle.pub_date = item.pubDate || item.isoDate;
+            recentArticle.pub_date = pubDate;
             recentArticle.description = item.contentSnippet || item.content || "Click to learn more!";
             recentArticle.feed = feed._id;
             recentArticle.user = req.user._id;
